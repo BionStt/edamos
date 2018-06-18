@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  edamos.identityserver:
+    image: edamosidentityserver
+    build:
+      context: Edamos.IdentityServer
+      dockerfile: Dockerfile

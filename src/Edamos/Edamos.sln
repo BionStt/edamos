@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edamos.Core", "Edamos.Core\Edamos.Core.csproj", "{97453326-C3AD-4227-9555-69AD7BF4AF1E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edamos.IdentityServer", "Edamos.IdentityServer\Edamos.IdentityServer.csproj", "{4273B97D-BBEB-4993-B8EC-823A0EFB7B90}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{878B52D0-5B13-4D75-ADD7-0635C79F021C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{97453326-C3AD-4227-9555-69AD7BF4AF1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97453326-C3AD-4227-9555-69AD7BF4AF1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97453326-C3AD-4227-9555-69AD7BF4AF1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97453326-C3AD-4227-9555-69AD7BF4AF1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4273B97D-BBEB-4993-B8EC-823A0EFB7B90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4273B97D-BBEB-4993-B8EC-823A0EFB7B90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4273B97D-BBEB-4993-B8EC-823A0EFB7B90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4273B97D-BBEB-4993-B8EC-823A0EFB7B90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{878B52D0-5B13-4D75-ADD7-0635C79F021C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{878B52D0-5B13-4D75-ADD7-0635C79F021C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{878B52D0-5B13-4D75-ADD7-0635C79F021C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{878B52D0-5B13-4D75-ADD7-0635C79F021C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {680FF755-A0FA-45F8-B66E-3D3C9F8EAB2F}
+	EndGlobalSection
+EndGlobal
