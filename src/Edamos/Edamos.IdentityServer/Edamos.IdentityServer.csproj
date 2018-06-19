@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.8" />
+    <ProjectReference Include="..\..\Edamos.AspNetCore\Edamos.AspNetCore.csproj" />
   </ItemGroup>
 
 </Project>

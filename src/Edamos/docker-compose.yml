@@ -6,3 +6,25 @@ services:
     build:
       context: Edamos.IdentityServer
       dockerfile: Dockerfile
+
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.2.2
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - .\data\es:/usr/share/elasticsearch/data
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+
+  #https://www.elastic.co/guide/en/kibana/current/_configuring_kibana_on_docker.html
+  kibana:
+    image: docker.elastic.co/kibana/kibana-oss:6.2.2
+    ports:
+      - "13451:5601" 
+    depends_on:
+      - elasticsearch
