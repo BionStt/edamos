@@ -3,6 +3,7 @@ using System.IO;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Edamos.AspNetCore
 {
@@ -22,6 +23,9 @@ namespace Edamos.AspNetCore
                 .Build();
 
             builder.UseConfiguration(config);
+
+            builder.ConfigureServices(services => services.AddMvc());
+            // builder.Configure(app => );
 
             return builder;
         }

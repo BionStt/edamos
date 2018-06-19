@@ -1,11 +1,37 @@
 version: '3.4'
 
 services:
+
+  lb:
+    image: dockercloud/haproxy:1.6.7
+    networks:
+      default:
+        aliases:
+         - sample.dhapcis4anc2.com
+         - login.dhapcis4anc2.com
+         - login.edamos.example.com
+    environment:      
+      - STATS_PORT=9506
+      - TIMEOUT=connect 5000, client 500000, server 500000
+      - "DEFAULT_SSL_CERT=-----BEGIN RSA PRIVATE KEY-----\nMIIEoAIBAAKCAQEA2rdDAZVnK+70WLI6N6LoiizXzW/WK/JZmUv3Fyc5r1lYZGRQ\nZmJntz06qkv/W5fmRB7+XBEtySOhLPpefByw/y2gCCVhLPb6Qwy7n2Dvq/ONYEwo\n3y7EQ3TnwC2kVn1fLqAWjkVgTXrVsocKiRlz4/VHNUNnFD82pK9Vz9CSZ0Nl6YlV\nwq5KAprAzZrWpnjT2VPqkcqqVjb50dkYhhhNM21vzxJ2EQQEMVANIBTtINckNXfP\nmTAg/n/6JaKeiD8ezyEhuEm2HxglgwclNizoGaz1Z7BDLhSlpkAX1EgbKcBG15uc\nI+P7HO2RibtMGzhSFWS1QCwAIBCjK+ybATb16QIDAQABAoH/USmws+W9Y5BJHKEG\n+Z56rMv3SUU3NRe6KCkIiI8F2QxOwPJ444Wg917BZnDNUjAMQzs9KO03EG0oYoiG\nh4geJpPHzz4P0Z/VPwx6k6plRmobDKE2iZvROTcoySgm0/GyYJsHw8P6+MWch6OV\nRUsstmtPAXUBy4GpxXNLZNMBgU/Rvb3enLHVY2cCKY4JanHAnbZgVe/B4T5bPyIW\nzjtBJjgtoLbEqhPeHEw+khfMXS6bty/tOefW2P87Cvwvm+EkkHMjB6O8xN+OVgoE\nDsBHqiHYFu3Ot6kr0SiHfbNpiz2zXdG9AvLVvPBcTF6cXEXAnXXuRCE+Vr8ms/0J\nrtX9AoGBAOMq0qdVLpSQ6jfOiLONk7CnGzxKA+fL2WgWbfmzT83D2xiciwZPibLI\nslYvCU4Luv1g+it28wRtO0ldw+v+5ap2U76L+4ZDKZepCb+cVvRSbVIS20I+QAT5\npZpgRkpy91pPfxCvznz5qdiY0OJwXU0wlqmRI0S1ZL49fJIhl59LAoGBAPZ51V9T\nucrHSRDn/rzGwacTU6YRCeCtZQRI65Aq2IEawfaZODjXc362UU4zgTIPxf6vUMtw\n1okFlVJbf8PMiqD2MeXsO/N5RprC1AcGQNUEHe4vt6OS8pHpsc89fgik2yDKFC2X\n9ZHYa+C5DbB1RoEnmV/07xsqBjHd5JtGXNsbAoGAMsw9pNuAegpZxbbyjKwpDYSg\nq3+llezYpdT2LLMzMkEMulkvIW8hzI/iiTEldIVdABHyf0uvFhtS+Zn1GM28D708\nBs0IpsJYB6juHCHas/HGrma3Dv4alMI6jOXgcf95XoGOWW3mz72IhH3PoAMeagdm\neW6SI2goqf3X4FmQrTcCgYAzoggp5R85tI/A4+jAYR62Ql02n8Ei+Q/9Ws1GMUOT\noChb4XMerTu7orPbnvyEoTtIBC/3vlai87F5REO6n8G2wHxpfxh8A77fssq6AfxY\n43jlqcddk+4O1RbzpB0f8HEbKFobxwahm+XVeM6+VYMEkWgW6vegCCiuD57RTGct\nWwKBgAqxNRLLuAWxSD5gi2zCwiNG0Ij01yeVg2TS6oH2DNH1Q28T/bCyQ4Yh9B4q\nZIGjfpttWuHzpnQtENHuTYrSm4ng8/UCtHljWGY4b7QH2PmjRlLM1qfwje8Za8Xu\nGa+QHELtsuEOJnghezVFg/xu2k0KuuwVyzkW0oIfU7InTT5a\n-----END RSA PRIVATE KEY-----\nBag Attributes\n    localKeyID: 01 00 00 00 \n    1.3.6.1.4.1.311.17.3.71: 44 00 45 00 53 00 4B 00 54 00 4F 00 50 00 2D 00 51 00 36 00 54 00 41 00 42 00 50 00 32 00 00 00 \nsubject=/CN=login.dhapcis4anc2.com\nissuer=/CN=RootCASample\n-----BEGIN CERTIFICATE-----\nMIIDcTCCAlmgAwIBAgIQdzd+3ArpjqRDRO7DP6Y1OTANBgkqhkiG9w0BAQsFADAX\nMRUwEwYDVQQDDAxSb290Q0FTYW1wbGUwHhcNMTgwMzA3MTIyNDI1WhcNMjAwMzA3\nMTIyNDI1WjAhMR8wHQYDVQQDDBZsb2dpbi5kaGFwY2lzNGFuYzIuY29tMIIBIjAN\nBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2rdDAZVnK+70WLI6N6LoiizXzW/W\nK/JZmUv3Fyc5r1lYZGRQZmJntz06qkv/W5fmRB7+XBEtySOhLPpefByw/y2gCCVh\nLPb6Qwy7n2Dvq/ONYEwo3y7EQ3TnwC2kVn1fLqAWjkVgTXrVsocKiRlz4/VHNUNn\nFD82pK9Vz9CSZ0Nl6YlVwq5KAprAzZrWpnjT2VPqkcqqVjb50dkYhhhNM21vzxJ2\nEQQEMVANIBTtINckNXfPmTAg/n/6JaKeiD8ezyEhuEm2HxglgwclNizoGaz1Z7BD\nLhSlpkAX1EgbKcBG15ucI+P7HO2RibtMGzhSFWS1QCwAIBCjK+ybATb16QIDAQAB\no4GuMIGrMA4GA1UdDwEB/wQEAwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYB\nBQUHAwEwOgYDVR0RBDMwMYIWbG9naW4uZGhhcGNpczRhbmMyLmNvbYIXc2FtcGxl\nLmRoYXBjaXM0YW5jMi5jb20wHwYDVR0jBBgwFoAUw2UriDve8uMT+lVSlOfnC1dm\nqbkwHQYDVR0OBBYEFIHJO83Fy5vCon+WNMhw9y0i42TQMA0GCSqGSIb3DQEBCwUA\nA4IBAQCWGlgLMUPSyB+D3yvJeYwO3AUUxnarqIfF0bJ1Zc8o+0NJ0ayQpQevgSXv\nPB7FsEwewuXRdEgpVJkb/xKvI1RsiDvmLH5+8waqK+6XVW+naEGQzDwhHC8wkxLq\n+oipQDrdLdIym50z88nKeX2UQ/cp+knOyFjZaBi7h2/qw/XA5RlUwRqnTYzzkBNP\nXrSKPKG2GxNyt9NhoNMRsbpROqu/cnElvglrHEaWS9ytdEB+ui27/w4cFVBDDhA7\n8+RVQBMsycTmHIZp+cPKKckXwuEQtxh1ONy3n0rbricsP6JOYarGy+r0+YlVWU5n\nOSx/CvmzwzPsp47PVhphaE7iJjrR\n-----END CERTIFICATE-----"
+    links:
+      - edamos.identityserver
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - edamos.identityserver
+    ports:
+      - "443:443"
+
   edamos.identityserver:
     image: edamosidentityserver
     build:
       context: Edamos.IdentityServer
       dockerfile: Dockerfile
+    environment:
+      - "VIRTUAL_HOST=https://login*/*"
+      - VIRTUAL_HOST_WEIGHT=2
+      - SERVICE_PORTS=80
 
 
   elasticsearch:
