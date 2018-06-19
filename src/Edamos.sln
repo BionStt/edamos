@@ -9,7 +9,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edamos.IdentityServer", "Ed
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{878B52D0-5B13-4D75-ADD7-0635C79F021C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edamos.AspNetCore", "..\Edamos.AspNetCore\Edamos.AspNetCore.csproj", "{D3D6777A-9E96-493A-84F8-0BD1C48FCC30}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edamos.AspNetCore", "Edamos.AspNetCore\Edamos.AspNetCore.csproj", "{D3D6777A-9E96-493A-84F8-0BD1C48FCC30}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E3EDB12C-AF68-48E5-AC03-2BDE8581D4F7}"
+	ProjectSection(SolutionItems) = preProject
+		..\env\selfSignedCert.ps1 = ..\env\selfSignedCert.ps1
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

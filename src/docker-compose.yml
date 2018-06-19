@@ -1,0 +1,52 @@
+version: '3.4'
+services:
+  lb:
+    image: dockercloud/haproxy:1.6.7
+    networks:
+      default:
+        aliases:
+         - "login.edamos.example.com"
+    environment:
+      "STATS_PORT": "9506"
+      "TIMEOUT": "connect 5000, client 500000, server 500000"
+      "DEFAULT_SSL_CERT": "-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEAoj1mZwKaEZ8ZGGXmE+NHAKq3MdhB5fosAYvtj9maHW1+6OxN\nfoduFfPcD3L7WDyte2rWZ5kfsaguLjteJCKE+y39PrH5kuX7jL534ZIxQRrJt0aZ\nzBvYcrWVjuHslOYL3QR87+QT9VLYOnioqGRrphIDtEmqVE3I2ZUofljCLPuBu4L0\nggidOFbLdkBxKvOK8u/pmib+VjaVIV/EUzLNkSTJ3AHc9juIk7bxmS4TK38Jggn5\nGcKAYsfIJq45ziZGMO5Dm0oxwoBcgwqmj9Ng9UVTBsl0udCDejAWMMVIP5q1Cfma\nY2FmYhWEgdNhr+qC55U2oU39tX+fQOpDFpm5NQIDAQABAoIBAEPHyyR2HdAG3AEp\ncToV1fAdYnPcmYtvPTtYLmPO0WhB+qdtMeMOyZs6SlHaA9AVaZUKSZD2lBsw3DpM\na0RFd7FIwWiUCmSo2LMwT/1ZimJcwrFjOZXgfElQO696C9EZWxN3cIr4iq4Pcm7b\nQfs4GRFErW+A5zxZUvQ0MLq4ckdAEdE7h2QglSVQU+cIMyzt7+1IOaz44CLtq7nU\nmxV5V1tgtJCfrHTrLBqlMOaEx19yB8lj872xbb5vHLYcQmqGRZp8iH9DPke2pgTE\n+aJDLU4u8lBIPJvG9rEYyu6MdzoZkAXogHoOJwwke60H+CM9vmLLXUfkgLAgEqUh\nIkjQv3ECgYEA0iKPAB2iEc7NCQkp9REEOMoH9ZX1vH3bplOKRPSplEUJ4bjxlm5G\nDU0mPYRI3HuWsW0BqDZFHIhiGVMeP8SepY7l6QbR0EZD4mW52xsh1dYTVtUB1i5Q\nazDAonxT81uQNnLvhnvILUVQcDm/0LpTC08jb5ANRazvhq3kIK8GNbcCgYEAxaaq\nfv+IwNaoAR0gaZP1jwQkEGQ16/pCfHDbBizdjVPPD55UjpgxnEhPmFV3/T1Dyw3H\nh4OWHc4VsXhpHReMVq/ZueA+gl6IRQzLXjgGG578uTgTkcqihEvVcLgTesCnVBJX\nP4ar8zDuvnkJKIJ+4WTREiwzguuSM62BQlztKHMCgYBzSny07o0+Qf1iqMF5cNWl\nJsuJJbbGrTL3JbymKqpj7CEI1ETQaT5MC/kgJVUoizJZtFoFZYkzp2xTQrRE/mag\npS9lU9WH9RVHwNJg8Zj1ztebe5DfZ1e+B+iY/ae9zI3qIdNjMMTaeb4xZK3mImRv\nvwLNMfbmNITSmtOgTwcULwKBgQCPqfk7nlm0cVJknNs2YomWjpf4Ih7fi2RQN2e8\nMVhIpaZX3+nuS8mjoxvXyigRNjrUmQtzAL5Yo7c47CDbOIaVa/SCGvDUqgm6xvX7\nYhVudj2UE6KF0hgWuVhHOkVOcEIv5bTtQ+IwPl0KrcduXowDINimsOIwQzJdxbuy\nlQD86QKBgBEHciFpuUSYkMhq6wNKlSaU6BYGuZTx6o+S8xosTTDHRWiXpnWTq5nZ\nvsnnog3n486Yqax4HuPMXT+r/6VbW6S0DO/FNAh2fv0Y17hTQ31thltUkES8NRCb\nqyisJh06J2cC9xpaNcBM4yVQY692lOeAbveupvjtiF+vQ/QTgMox\n-----END RSA PRIVATE KEY-----\nBag Attributes\n    localKeyID: 01 00 00 00 \n    1.3.6.1.4.1.311.17.3.71: 44 00 45 00 53 00 4B 00 54 00 4F 00 50 00 2D 00 51 00 36 00 54 00 41 00 42 00 50 00 32 00 00 00 \nsubject=/CN=edamos.example.com\nissuer=/CN=EdamosRootCA\n-----BEGIN CERTIFICATE-----\nMIID4DCCAsigAwIBAgIQKyfu4ZLp2JJNAyx0FR3V9TANBgkqhkiG9w0BAQsFADAX\nMRUwEwYDVQQDDAxFZGFtb3NSb290Q0EwHhcNMTgwNjE5MTUyNTMwWhcNMjAwNjE5\nMTUyNTMwWjAdMRswGQYDVQQDDBJlZGFtb3MuZXhhbXBsZS5jb20wggEiMA0GCSqG\nSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCiPWZnApoRnxkYZeYT40cAqrcx2EHl+iwB\ni+2P2ZodbX7o7E1+h24V89wPcvtYPK17atZnmR+xqC4uO14kIoT7Lf0+sfmS5fuM\nvnfhkjFBGsm3RpnMG9hytZWO4eyU5gvdBHzv5BP1Utg6eKioZGumEgO0SapUTcjZ\nlSh+WMIs+4G7gvSCCJ04Vst2QHEq84ry7+maJv5WNpUhX8RTMs2RJMncAdz2O4iT\ntvGZLhMrfwmCCfkZwoBix8gmrjnOJkYw7kObSjHCgFyDCqaP02D1RVMGyXS50IN6\nMBYwxUg/mrUJ+ZpjYWZiFYSB02Gv6oLnlTahTf21f59A6kMWmbk1AgMBAAGjggEg\nMIIBHDAOBgNVHQ8BAf8EBAMCBaAwHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUF\nBwMBMIGqBgNVHREEgaIwgZ+CGGxvZ2luLmVkYW1vcy5leGFtcGxlLmNvbYIZdXBs\nb2FkLmVkYW1vcy5leGFtcGxlLmNvbYIbZG93bmxvYWQuZWRhbW9zLmV4YW1wbGUu\nY29tghZhcGkuZWRhbW9zLmV4YW1wbGUuY29tghlwdWJsaWMuZWRhbW9zLmV4YW1w\nbGUuY29tghhhZG1pbi5lZGFtb3MuZXhhbXBsZS5jb20wHwYDVR0jBBgwFoAUFVAG\nBP6hm5I2itaRoGtUykDUtIUwHQYDVR0OBBYEFH2CvAKqOcjWgHr06OQD5/eHjXPI\nMA0GCSqGSIb3DQEBCwUAA4IBAQBZGXoeleG5QeDs6rbswdcvDKQoG6XlaIe392ln\nHLsUyZEtFwohAJJSBZ6jffElsTYOlbgoQpfSnwCVEnJ2AN5Aoe+7fI4HzuaFQFXW\nH6DriUidy85bxHxbfS2n0K7XSOSQRvGbsOIg+ejEj1bPieIDHCSWxYGECU53zLgI\nSFopgtkvLjNCbg9fFfXs1blpyyqj8SPgUj4h+6K/rDNr3Z4ive1+umuXkQGhRyVJ\nDr5qirYuz0+rBOt5JxtuYpyCGdeqKJQXfXSll9f7UC/FO7T3cG4JckEHt/px/hA2\nfLXXcgbnj4Q5lHXDT7aZLYYhKMasOW46+OHmFxLBa4h0jNOg\n-----END CERTIFICATE-----"
+    links:
+      - edamos.identityserver
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - edamos.identityserver
+    ports:
+      - "443:443"
+
+  edamos.identityserver:
+    image: edamosidentityserver
+    build:
+      context: Edamos.IdentityServer
+      dockerfile: Dockerfile
+    environment:
+      "VIRTUAL_HOST": "https://login*/*"
+      "VIRTUAL_HOST_WEIGHT": "2"
+      "SERVICE_PORTS": "80"
+
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.2.2
+    environment:
+      "cluster.name": "docker-cluster"
+      "bootstrap.memory_lock": "true"
+      "ES_JAVA_OPTS": "-Xms512m -Xmx512m"
+    volumes:
+      - .\data\es:/usr/share/elasticsearch/data
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+
+  #https://www.elastic.co/guide/en/kibana/current/_configuring_kibana_on_docker.html
+  kibana:
+    image: docker.elastic.co/kibana/kibana-oss:6.2.2
+    ports:
+      - "13451:5601" 
+    depends_on:
+      - elasticsearch
