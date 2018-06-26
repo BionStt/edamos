@@ -1,5 +1,12 @@
 version: '3.4'
 services:
+  db:
+    image: microsoft/mssql-server-linux:2017-CU6
+    environment:
+      SA_PASSWORD: "edamoslocal@123"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "13450:1433"
   lb:
     image: dockercloud/haproxy:1.6.7
     networks:

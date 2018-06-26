@@ -330,3 +330,4 @@ ASALocalRun/
 .mfractor/
 /src/Edamos/data
 /src/data
+/src/Edamos.IdentityServer/tempkey.rsa

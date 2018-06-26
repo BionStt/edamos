@@ -1,0 +1,2 @@
+127.0.0.1 login.edamos.example.com
+127.0.0.1 edamos.example.com

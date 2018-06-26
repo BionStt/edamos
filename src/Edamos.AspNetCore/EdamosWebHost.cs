@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
+using Edamos.Core.Logs;
 using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,9 +26,15 @@ namespace Edamos.AspNetCore
 
             builder.UseConfiguration(config);
 
-            builder.ConfigureServices(services => services.AddMvc());
-            // builder.Configure(app => );
+            builder.ConfigureServices(services =>
+            {
+                services.AddMvc();
+                services.AddLogging(logsBuilder => logsBuilder.AddEdamosLogs(config));
+            });
 
+#if DEBUG
+            builder.Configure(app => app.UseDeveloperExceptionPage());
+#endif
             return builder;
         }
     }
