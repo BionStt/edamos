@@ -1,12 +1,25 @@
 version: '3.4'
 services:
+  redisdp:
+    image: redis:4.0.5-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+       - .\data\redisdp:/data
+
+  redis:
+    image: redis:4.0.5-alpine
+    command: ["redis-server"]
+
   db:
-    image: microsoft/mssql-server-linux:2017-CU6
+    image: microsoft/mssql-server-linux:2017-CU7
     environment:
       SA_PASSWORD: "edamoslocal@123"
       ACCEPT_EULA: "Y"
     ports:
       - "13450:1433"
+    volumes:
+       - .\data\mssql:/var/opt/mssql
+
   lb:
     image: dockercloud/haproxy:1.6.7
     networks:
@@ -31,6 +44,9 @@ services:
     build:
       context: Edamos.IdentityServer
       dockerfile: Dockerfile
+    depends_on:
+      - db
+      - redisdp
     environment:
       "VIRTUAL_HOST": "https://login*/*"
       "VIRTUAL_HOST_WEIGHT": "2"
