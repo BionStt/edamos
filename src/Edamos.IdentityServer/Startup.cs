@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Edamos.Core;
+using Edamos.IdentityServer.Data;
 using IdentityServer4.Configuration;
 using IdentityServer4.EntityFramework.DbContexts;
 using Microsoft.AspNetCore.Builder;
@@ -54,6 +55,8 @@ namespace Edamos.IdentityServer
                         sql => sql.MigrationsAssembly(migrationsAssembly));
             });
 
+            isb.AddInMemoryCaching().AddConfigurationStoreCache();
+
             MigrateDatabase(services);
         }
 
@@ -73,7 +76,11 @@ namespace Edamos.IdentityServer
             {
                 scope.ServiceProvider.GetService<PersistedGrantDbContext>().Database.Migrate();
 
-                scope.ServiceProvider.GetRequiredService<ConfigurationDbContext>().Database.Migrate();
+                ConfigurationDbContext configurationDbContext = scope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
+                configurationDbContext.Database.Migrate();
+
+                SeedData.IdentityResources(configurationDbContext);
+                SeedData.Clients(configurationDbContext);
             }
         }
     }

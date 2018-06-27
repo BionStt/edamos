@@ -15,5 +15,11 @@
             public const string LoggingUri =
                 "http://elasticsearch:9200";
         }
+
+        public static class Ui
+        {
+            public const string ClientSecret =
+                "secret";
+        }
     }
 }
