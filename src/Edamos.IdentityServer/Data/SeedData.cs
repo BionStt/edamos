@@ -1,10 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Edamos.Core;
+using Edamos.Core.Users;
+using Edamos.Core.Users.Data;
 using IdentityServer4;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
 using IdentityServer4.Models;
+using Microsoft.AspNetCore.Identity;
 using Client = IdentityServer4.EntityFramework.Entities.Client;
 
 namespace Edamos.IdentityServer.Data
@@ -57,5 +62,38 @@ namespace Edamos.IdentityServer.Data
                 context.SaveChanges();
             }            
         }
+
+        public static void Users(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        {
+            ApplicationUser user = userManager.FindByIdAsync(Consts.Identity.AdminUserId).Result;
+
+            if (user == null)
+            {
+                IdentityResult result = userManager.CreateAsync(new ApplicationUser
+                {
+                    Id = Consts.Identity.AdminUserId,
+                    UserName = Consts.Identity.AdminUserId
+                }, "EdamosAdmin!23").Result;                
+            }
+
+            IdentityRole role = roleManager.FindByIdAsync(Consts.Identity.AdminRoleId).Result;
+
+            if (role == null)
+            {
+                IdentityResult result = roleManager.CreateAsync(new IdentityRole
+                {
+                    Id = Consts.Identity.AdminRoleId,
+                    Name = Consts.Identity.AdminRoleId,
+                    ConcurrencyStamp = DateTime.UtcNow.Ticks.ToString("D")
+                }).Result;
+            }
+
+            user = userManager.FindByIdAsync(Consts.Identity.AdminUserId).Result;
+
+            if (!userManager.IsInRoleAsync(user, Consts.Identity.AdminRoleId).Result)
+            {
+                IdentityResult result = userManager.AddToRoleAsync(user, Consts.Identity.AdminRoleId).Result;
+            }
+        }        
     }
 }

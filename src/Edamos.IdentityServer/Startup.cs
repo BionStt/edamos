@@ -5,12 +5,15 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Edamos.Core;
+using Edamos.Core.Users;
+using Edamos.Core.Users.Data;
 using Edamos.IdentityServer.Data;
 using IdentityServer4.Configuration;
 using IdentityServer4.EntityFramework.DbContexts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,6 +32,15 @@ namespace Edamos.IdentityServer
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            //TODO: use real connection sting
+            services.AddDbContext<UsersDbContext>(options =>
+                options.UseSqlServer(DebugConstants.ConnectionStrings.IdentityUsersStore,
+                    sql => sql.MigrationsAssembly(typeof(UsersDbContext).GetTypeInfo().Assembly.GetName().Name)));
+
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<UsersDbContext>()
+                .AddDefaultTokenProviders();
+
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
             IIdentityServerBuilder isb = services.AddIdentityServer(options =>
             {
@@ -55,6 +67,8 @@ namespace Edamos.IdentityServer
                         sql => sql.MigrationsAssembly(migrationsAssembly));
             });
 
+            isb.AddAspNetIdentity<ApplicationUser>();
+
             isb.AddInMemoryCaching().AddConfigurationStoreCache();
 
             MigrateDatabase(services);
@@ -74,6 +88,11 @@ namespace Edamos.IdentityServer
         {
             using (var scope = services.BuildServiceProvider().GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
+                scope.ServiceProvider.GetRequiredService<UsersDbContext>().Database.Migrate();
+
+                SeedData.Users(scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>(),
+                    scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>());
+
                 scope.ServiceProvider.GetService<PersistedGrantDbContext>().Database.Migrate();
 
                 ConfigurationDbContext configurationDbContext = scope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();

@@ -8,6 +8,8 @@
                 "Data Source=db; Initial Catalog=model; User Id=sa; Password=edamoslocal@123; Enlist=false;";
 
             public const string IdentityServerOperationalStore = IdentityServerConfStore;
+
+            public const string IdentityUsersStore = IdentityServerConfStore;
         }
 
         public static class ElasticSearch
