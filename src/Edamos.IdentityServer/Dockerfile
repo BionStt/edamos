@@ -16,6 +16,4 @@ RUN dotnet publish Edamos.IdentityServer.csproj -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-COPY root.crt /usr/local/share/ca-certificates/foo.crt
-RUN update-ca-certificates
 ENTRYPOINT ["dotnet", "Edamos.IdentityServer.dll"]

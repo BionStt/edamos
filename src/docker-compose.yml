@@ -85,5 +85,5 @@ services:
       - redisdp
     environment:
       "VIRTUAL_HOST": "https://*/*"
-      "VIRTUAL_HOST_WEIGHT": "100"
+      "VIRTUAL_HOST_WEIGHT": "0"
       "SERVICE_PORTS": "80"

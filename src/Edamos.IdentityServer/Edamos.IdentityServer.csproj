@@ -10,9 +10,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\env\root.crt" Link="root.crt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Content Include="..\..\env\root.crt" Link="root.crt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

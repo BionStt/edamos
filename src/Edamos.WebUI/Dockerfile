@@ -17,6 +17,5 @@ RUN dotnet publish -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-COPY root.crt /usr/local/share/ca-certificates/foo.crt
-RUN update-ca-certificates
+COPY root.crt /usr/local/share/ca-certificates/EdamosRootCA.crt
 ENTRYPOINT ["dotnet", "Edamos.WebUI.dll"]

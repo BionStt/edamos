@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using Edamos.Core.Logs;
@@ -22,6 +23,11 @@ namespace Edamos.AspNetCore
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             var currentDir = Directory.GetCurrentDirectory();
 
+#if DEBUG
+            File.Copy("/app/bin/debug/netcoreapp2.0/root.crt", "/usr/local/share/ca-certificates/EdamosRootCA.crt");
+
+            Process.Start("update-ca-certificates")?.WaitForExit(10000);
+#endif            
             var config = new ConfigurationBuilder()
                 .SetBasePath(currentDir)
                 .AddJsonFile("appsettings.json", optional: true)

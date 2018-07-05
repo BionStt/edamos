@@ -16,7 +16,6 @@ namespace Edamos.IdentityServer.Data
 {
     public static class SeedData
     {
-        private const string UiClientId = "ui";
         private const string UiLoginApiResource = "ui";
 
         public static void Clients(ConfigurationDbContext context)
@@ -31,10 +30,10 @@ namespace Edamos.IdentityServer.Data
             }
 
             // TODO: configure clients            
-            if (!context.Clients.Any(client => client.ClientId == UiClientId))
+            if (!context.Clients.Any(client => client.ClientId == DebugConstants.Ui.ClientId))
             {
                 IdentityServer4.Models.Client client = new IdentityServer4.Models.Client();
-                client.ClientId = UiClientId;
+                client.ClientId = DebugConstants.Ui.ClientId;
                 client.ClientName = "EDAMOS UI";
                 client.AllowedGrantTypes = GrantTypes.HybridAndClientCredentials;
                 client.ClientSecrets = new[] { new Secret(DebugConstants.Ui.ClientSecret.Sha256()) }; // TODO: configure secret

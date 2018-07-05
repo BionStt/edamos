@@ -44,6 +44,9 @@ namespace Edamos.IdentityServer
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
             IIdentityServerBuilder isb = services.AddIdentityServer(options =>
             {
+                // TODO: set authority and PublicOrigin
+                options.IssuerUri = DebugConstants.IdentityServer.Authority;
+                options.PublicOrigin = DebugConstants.IdentityServer.Authority;
                 this.Configuration.Bind(nameof(IdentityServerOptions), options);
             });
 

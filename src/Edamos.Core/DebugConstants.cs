@@ -20,8 +20,13 @@
 
         public static class Ui
         {
-            public const string ClientSecret =
-                "secret";
+            public const string ClientSecret = "secret";
+            public const string ClientId = "ui";
+        }
+
+        public static class IdentityServer
+        {
+            public const string Authority = "https://login.edamos.example.com";
         }
     }
 }
