@@ -16,6 +16,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\env\selfSignedCert.ps1 = ..\env\selfSignedCert.ps1
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edamos.WebUI", "Edamos.WebUI\Edamos.WebUI.csproj", "{737BB918-43E2-4898-B888-F9686FDC8520}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +40,10 @@ Global
 		{D3D6777A-9E96-493A-84F8-0BD1C48FCC30}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3D6777A-9E96-493A-84F8-0BD1C48FCC30}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3D6777A-9E96-493A-84F8-0BD1C48FCC30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{737BB918-43E2-4898-B888-F9686FDC8520}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{737BB918-43E2-4898-B888-F9686FDC8520}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{737BB918-43E2-4898-B888-F9686FDC8520}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{737BB918-43E2-4898-B888-F9686FDC8520}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

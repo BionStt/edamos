@@ -21,16 +21,14 @@ namespace Edamos.IdentityServer.Data
 
         public static void Clients(ConfigurationDbContext context)
         {
-            //if (!context.ApiResources.Any(r => r.Name == UiLoginApiResource))
-            //{
-            //    ApiResource resource = new ApiResource();
-            //    resource.Name = UiLoginApiResource;
-            //    resource.DisplayName = "Main UI";
-                
-            //    context.ApiResources.Add(resource.ToEntity());
+            if (!context.ApiResources.Any(r => r.Name == UiLoginApiResource))
+            {
+                ApiResource resource = new ApiResource(UiLoginApiResource, "Main UI");                
 
-            //    context.SaveChanges();
-            //}
+                context.ApiResources.Add(resource.ToEntity());
+
+                context.SaveChanges();
+            }
 
             // TODO: configure clients            
             if (!context.Clients.Any(client => client.ClientId == UiClientId))
