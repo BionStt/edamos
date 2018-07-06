@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Edamos.AspNetCore;
 using Edamos.Core;
 using Edamos.Core.Users;
 using Edamos.Core.Users.Data;
@@ -80,6 +81,7 @@ namespace Edamos.IdentityServer
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseEdamosDefaults(env);
             app.UseIdentityServer();
 
             app.UseStaticFiles();

@@ -12,6 +12,13 @@
             public const string IdentityUsersStore = IdentityServerConfStore;
         }
 
+        public static class Redis
+        {
+            public const string DataProtectionHost = "redisdp";
+
+            public const int DataProtectionPort = 6379;
+        }
+
         public static class ElasticSearch
         {
             public const string LoggingUri =
@@ -20,6 +27,7 @@
 
         public static class Ui
         {
+            public const string RootAddress = "https://edamos.example.com";
             public const string ClientSecret = "secret";
             public const string ClientId = "ui";
         }

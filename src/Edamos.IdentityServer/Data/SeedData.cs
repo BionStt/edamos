@@ -37,11 +37,12 @@ namespace Edamos.IdentityServer.Data
                 client.ClientName = "EDAMOS UI";
                 client.AllowedGrantTypes = GrantTypes.HybridAndClientCredentials;
                 client.ClientSecrets = new[] { new Secret(DebugConstants.Ui.ClientSecret.Sha256()) }; // TODO: configure secret
-                client.AllowedScopes = new[] { IdentityServerConstants.StandardScopes.OpenId };
+                client.AllowedScopes = new[]
+                    {IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile};
 
-                client.RedirectUris = new[] {"https://edamos.example.com/signin-oidc"};
-                client.PostLogoutRedirectUris = new[] {"https://edamos.example.com/signout-callback-oidc"};
-
+                client.RedirectUris = new[] { DebugConstants.Ui.RootAddress + Consts.OpenId.CallbackPath };
+                client.PostLogoutRedirectUris = new[] { DebugConstants.Ui.RootAddress + Consts.OpenId.SignOutCallbackPath };
+                client.RequireConsent = false;
                 context.Clients.Add(client.ToEntity());
 
                 context.SaveChanges();
@@ -57,7 +58,16 @@ namespace Edamos.IdentityServer.Data
                 context.IdentityResources.Add(openId.ToEntity());
 
                 context.SaveChanges();
-            }            
+            }
+
+            IdentityResources.Profile profile = new IdentityResources.Profile();
+
+            if (!context.IdentityResources.Any(resource => resource.Name == profile.Name))
+            {
+                context.IdentityResources.Add(profile.ToEntity());
+
+                context.SaveChanges();
+            }
         }
 
         public static void Users(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
