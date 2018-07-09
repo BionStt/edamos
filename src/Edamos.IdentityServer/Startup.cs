@@ -33,15 +33,7 @@ namespace Edamos.IdentityServer
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            //TODO: use real connection sting
-            services.AddDbContext<UsersDbContext>(options =>
-                options.UseSqlServer(DebugConstants.ConnectionStrings.IdentityUsersStore,
-                    sql => sql.MigrationsAssembly(typeof(UsersDbContext).GetTypeInfo().Assembly.GetName().Name)));
-
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<UsersDbContext>()
-                .AddDefaultTokenProviders();
-
+            services.AddIdentity<ApplicationUser, IdentityRole>().AddDefaultTokenProviders();
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
             IIdentityServerBuilder isb = services.AddIdentityServer(options =>
             {

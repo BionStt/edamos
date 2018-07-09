@@ -101,6 +101,18 @@ namespace Edamos.IdentityServer.Data
             {
                 IdentityResult result = userManager.AddToRoleAsync(user, Consts.Identity.AdminRoleId).Result;
             }
+#if DEBUG
+            ApplicationUser testUser = userManager.FindByIdAsync("tid").Result;
+
+            if (testUser == null)
+            {
+                IdentityResult result = userManager.CreateAsync(new ApplicationUser
+                {
+                    Id = "tid",
+                    UserName = "tname"
+                }, "EdamosTest!23").Result;
+            }
+#endif
         }        
     }
 }

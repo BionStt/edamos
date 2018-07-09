@@ -32,7 +32,7 @@ namespace Edamos.AspNetCore
                 Process.Start("update-ca-certificates")?.WaitForExit(10000);
             }            
 #endif            
-            var config = new ConfigurationBuilder()
+            IConfigurationRoot config = new ConfigurationBuilder()
                 .SetBasePath(currentDir)
                 .AddJsonFile("appsettings.json", optional: true)
                 .AddJsonFile($"appsettings.{environment}.json", optional: true)
@@ -44,6 +44,8 @@ namespace Edamos.AspNetCore
 
             builder.ConfigureServices(services =>
             {
+                services.AddEdamosDefault(config);
+
                 // OPTIONAL: change redis connection if needed
                 ConfigurationOptions redisOptions = new ConfigurationOptions ();
                 redisOptions.EndPoints.Add(DebugConstants.Redis.DataProtectionHost,
@@ -55,8 +57,7 @@ namespace Edamos.AspNetCore
                 //TODO: add cert encryption
                 services.AddDataProtection().PersistKeysToRedis(redis).SetApplicationName(AppDomain.CurrentDomain.FriendlyName);
                 services.AddMvc();
-                services.AddLogging(logsBuilder => logsBuilder.AddEdamosLogs(config));
-
+                
                 // TODO: remove if not using SSL termanation
                 services.Configure<ForwardedHeadersOptions>(options =>
                 {

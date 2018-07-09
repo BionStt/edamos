@@ -16,6 +16,8 @@
         {
             public const string DataProtectionHost = "redisdp";
 
+            public const string UsersCacheHost = "redis";
+
             public const int DataProtectionPort = 6379;
         }
 
