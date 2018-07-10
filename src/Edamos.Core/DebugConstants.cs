@@ -34,6 +34,20 @@
             public const string ClientId = "ui";
         }
 
+        public static class AdminUi
+        {
+            public const string RootAddress = "https://admin.edamos.example.com";
+            public const string ClientSecret = "secretAdmin";
+            public const string ClientId = "adm";
+        }
+
+        public static class KibanaUi
+        {
+            public const string RootAddress = "https://kibana.edamos.example.com";
+            public const string ClientSecret = "secretKibana";
+            public const string ClientId = "kbn";
+        }
+
         public static class IdentityServer
         {
             public const string Authority = "https://login.edamos.example.com";

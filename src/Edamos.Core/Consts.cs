@@ -10,9 +10,17 @@
 
         public static class OpenId
         {
-            public const string SchemaName = "oidc";
+            public const string ResponseTypeCodeToken = "code id_token";
             public const string CallbackPath = "/signin-oidc";
             public const string SignOutCallbackPath = "/signout-callback-oidc";
+        }
+
+        public static class Kibana
+        {
+            public const string AppPath = "/app/kibana";
+            public const string Host = "kibana";
+            public const int Port = 5601;
+            public const string Scheme = "http";
         }
     }
 }

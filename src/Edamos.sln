@@ -19,6 +19,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edamos.WebUI", "Edamos.WebUI\Edamos.WebUI.csproj", "{737BB918-43E2-4898-B888-F9686FDC8520}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edamos.AdminUI", "Edamos.AdminUI\Edamos.AdminUI.csproj", "{C4FC2D98-9845-4363-9742-D14D5D14DB11}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edamos.KibanaUI", "Edamos.KibanaUI\Edamos.KibanaUI.csproj", "{7EE778FA-52E2-4193-BCB5-11E68E972547}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,14 @@ Global
 		{737BB918-43E2-4898-B888-F9686FDC8520}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{737BB918-43E2-4898-B888-F9686FDC8520}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{737BB918-43E2-4898-B888-F9686FDC8520}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4FC2D98-9845-4363-9742-D14D5D14DB11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4FC2D98-9845-4363-9742-D14D5D14DB11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4FC2D98-9845-4363-9742-D14D5D14DB11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4FC2D98-9845-4363-9742-D14D5D14DB11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EE778FA-52E2-4193-BCB5-11E68E972547}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EE778FA-52E2-4193-BCB5-11E68E972547}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EE778FA-52E2-4193-BCB5-11E68E972547}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EE778FA-52E2-4193-BCB5-11E68E972547}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

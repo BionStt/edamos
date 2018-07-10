@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Edamos.AspNetCore;
 using Edamos.Core;
 using Edamos.Core.Users;
 using Microsoft.AspNetCore.Authentication;
@@ -68,18 +69,18 @@ namespace Edamos.WebUI
 
                     options.ClientId = DebugConstants.Ui.ClientId;
                     options.ClientSecret = DebugConstants.Ui.ClientSecret;
-                    options.ResponseType = "code id_token";
+                    options.ResponseType = Consts.OpenId.ResponseTypeCodeToken;
                     options.CallbackPath = new PathString(Consts.OpenId.CallbackPath);
                     options.SignedOutCallbackPath = new PathString(Consts.OpenId.SignOutCallbackPath);
 
-                    options.SaveTokens = true;
+                    options.SaveTokens = false;
                 });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseForwardedHeaders();
+            app.UseEdamosDefaults(env);
             app.UseAuthentication();
             app.UseStaticFiles();
 

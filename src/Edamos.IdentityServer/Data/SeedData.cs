@@ -47,6 +47,42 @@ namespace Edamos.IdentityServer.Data
 
                 context.SaveChanges();
             }
+
+            if (!context.Clients.Any(client => client.ClientId == DebugConstants.AdminUi.ClientId))
+            {
+                IdentityServer4.Models.Client client = new IdentityServer4.Models.Client();
+                client.ClientId = DebugConstants.AdminUi.ClientId;
+                client.ClientName = "EDAMOS ADMIN";
+                client.AllowedGrantTypes = GrantTypes.HybridAndClientCredentials;
+                client.ClientSecrets = new[] { new Secret(DebugConstants.AdminUi.ClientSecret.Sha256()) }; // TODO: configure secret
+                client.AllowedScopes = new[]
+                    {IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile};
+
+                client.RedirectUris = new[] { DebugConstants.AdminUi.RootAddress + Consts.OpenId.CallbackPath };
+                client.PostLogoutRedirectUris = new[] { DebugConstants.AdminUi.RootAddress + Consts.OpenId.SignOutCallbackPath };
+                client.RequireConsent = false;
+                context.Clients.Add(client.ToEntity());
+
+                context.SaveChanges();
+            }
+
+            if (!context.Clients.Any(client => client.ClientId == DebugConstants.KibanaUi.ClientId))
+            {
+                IdentityServer4.Models.Client client = new IdentityServer4.Models.Client();
+                client.ClientId = DebugConstants.KibanaUi.ClientId;
+                client.ClientName = "EDAMOS KIBANA";
+                client.AllowedGrantTypes = GrantTypes.HybridAndClientCredentials;
+                client.ClientSecrets = new[] { new Secret(DebugConstants.KibanaUi.ClientSecret.Sha256()) }; // TODO: configure secret
+                client.AllowedScopes = new[]
+                    {IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile};
+
+                client.RedirectUris = new[] { DebugConstants.KibanaUi.RootAddress + Consts.OpenId.CallbackPath };
+                client.PostLogoutRedirectUris = new[] { DebugConstants.KibanaUi.RootAddress + Consts.OpenId.SignOutCallbackPath };
+                client.RequireConsent = false;
+                context.Clients.Add(client.ToEntity());
+
+                context.SaveChanges();
+            }
         }
 
         public static void IdentityResources(ConfigurationDbContext context)

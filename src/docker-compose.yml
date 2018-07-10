@@ -54,6 +54,8 @@ services:
     links:
       - edamos.identityserver
       - edamos.webui
+      - edamos.adminui
+      - edamos.kibanaui
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
@@ -86,4 +88,30 @@ services:
     environment:
       "VIRTUAL_HOST": "https://*/*"
       "VIRTUAL_HOST_WEIGHT": "0"
+      "SERVICE_PORTS": "80"
+
+  edamos.adminui:
+    image: edamosadminui
+    build:
+      context: Edamos.AdminUI
+      dockerfile: Dockerfile
+    depends_on:
+      - edamos.identityserver
+      - redisdp
+    environment:
+      "VIRTUAL_HOST": "https://admin*/*"
+      "VIRTUAL_HOST_WEIGHT": "3"
+      "SERVICE_PORTS": "80"
+
+  edamos.kibanaui:
+    image: edamoskibanaui
+    build:
+      context: Edamos.KibanaUI
+      dockerfile: Dockerfile
+    depends_on:
+      - edamos.identityserver
+      - redisdp
+    environment:
+      "VIRTUAL_HOST": "https://kibana*/*"
+      "VIRTUAL_HOST_WEIGHT": "4"
       "SERVICE_PORTS": "80"

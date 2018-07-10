@@ -13,3 +13,15 @@ services:
     ports:
       - "80"
 
+  edamos.adminui:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "80"
+
+  edamos.kibanaui:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "80"
+
