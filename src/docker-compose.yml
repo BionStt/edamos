@@ -36,10 +36,17 @@ services:
   #https://www.elastic.co/guide/en/kibana/current/_configuring_kibana_on_docker.html
   kibana:
     image: docker.elastic.co/kibana/kibana-oss:6.2.2
-    ports:
-      - "13451:5601" 
     depends_on:
       - elasticsearch
+
+  grafana:
+    image: grafana/grafana:5.2.1
+    environment:
+      "GF_INSTALL_PLUGINS": "grafana-clock-panel,grafana-simple-json-datasource"
+    volumes:
+      - .\data\grafana:/var/lib/grafana
+    ports:
+      - "3000:3000"
 
   lb:
     image: dockercloud/haproxy:1.6.7

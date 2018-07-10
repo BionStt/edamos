@@ -15,7 +15,7 @@ namespace Edamos.WebUI
     {
         public static void Main(string[] args)
         {
-            WebHost.CreateDefaultBuilder(args)
+            WebHost.CreateDefaultBuilder(args)                                
                 .AddEdamosDefault(args)
                 .UseStartup<Startup>()
                 .Build().Run();

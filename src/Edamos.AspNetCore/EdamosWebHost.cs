@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using App.Metrics;
+using App.Metrics.AspNetCore;
+using App.Metrics.Reporting.Elasticsearch;
+
 using Edamos.Core;
 using Edamos.Core.Logs;
 using Microsoft.AspNetCore;
@@ -42,8 +46,15 @@ namespace Edamos.AspNetCore
 
             builder.UseConfiguration(config);
 
-            builder.ConfigureServices(services =>
+            builder.ConfigureMetricsWithDefaults(b =>
             {
+                b.Report.ToElasticsearch(DebugConstants.ElasticSearch.MetricsUri, "metricsqwe",
+                    TimeSpan.FromSeconds(10));
+            });
+            builder.UseMetrics();
+
+            builder.ConfigureServices(services =>
+            {                
                 services.AddEdamosDefault(config);
 
                 // OPTIONAL: change redis connection if needed
@@ -70,6 +81,8 @@ namespace Edamos.AspNetCore
 
         public static IApplicationBuilder UseEdamosDefaults(this IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseMetricsAllMiddleware();
+            
             app.UseForwardedHeaders();
 
 #if DEBUG

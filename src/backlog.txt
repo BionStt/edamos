@@ -2,3 +2,4 @@ pages for UI to forbidden
 measurement for operation time
 memory cache
 logout from all apps
+grafana

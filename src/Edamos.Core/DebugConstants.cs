@@ -25,6 +25,9 @@
         {
             public const string LoggingUri =
                 "http://elasticsearch:9200";
+
+            public const string MetricsUri = LoggingUri;
+
         }
 
         public static class Ui
