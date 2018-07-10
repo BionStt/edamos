@@ -77,5 +77,16 @@ namespace Edamos.AspNetCore
 #endif  
             return app;
         }
+
+        public static IApplicationBuilder UseEdamosMvcWithAuth(this IApplicationBuilder app, IHostingEnvironment env)
+        {
+            app.UseEdamosDefaults(env);
+            app.UseAuthentication();
+            app.UseStaticFiles();
+
+            app.UseMvcWithDefaultRoute();
+
+            return app;
+        }
     }
 }

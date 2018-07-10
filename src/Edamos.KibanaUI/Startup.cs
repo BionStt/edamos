@@ -33,50 +33,12 @@ namespace Edamos.KibanaUI
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {            
-            services.AddAuthentication(options =>
-                {
-                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-                    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                })
-                .AddCookie(options =>
-                {                    
-                    options.Events.OnValidatePrincipal = async context =>
-                    {
-                        var sp = services.BuildServiceProvider();
-                        IUserManager<ApplicationUser> userManager =
-                            sp.GetRequiredService<IUserManager<ApplicationUser>>();
-
-                        string userId = context.Principal.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value;
-
-                        var claims = new List<Claim>();
-
-                        claims.Add(new Claim(ClaimTypes.Role, "logs"));
-                        ApplicationUser user = await userManager.FindByIdAsync(userId);
-
-                        claims.Add(new Claim(ClaimTypes.Name, user.UserName));
-
-                        var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme,
-                            ClaimTypes.Name, ClaimTypes.Role);
-
-                        context.ReplacePrincipal(new ClaimsPrincipal(identity));                        
-                    };
-                })
-                .AddOpenIdConnect(options =>
-                {
-                    options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-
-                    options.Authority = DebugConstants.IdentityServer.Authority;
-                    
-                    options.ClientId = DebugConstants.KibanaUi.ClientId;
-                    options.ClientSecret = DebugConstants.KibanaUi.ClientSecret;
-                    options.ResponseType = Consts.OpenId.ResponseTypeCodeToken;
-                    options.CallbackPath = new PathString(Consts.OpenId.CallbackPath);
-                    options.SignedOutCallbackPath = new PathString(Consts.OpenId.SignOutCallbackPath);
-
-                    options.SaveTokens = true;
-                });
+        {
+            services.AddEdamosCookieOpenId(new OpenIdCookieSettings
+            {
+                ClientId = DebugConstants.KibanaUi.ClientId,
+                ClientSecret = DebugConstants.KibanaUi.ClientSecret
+            });
 
             services.AddAuthorization(options =>
             {
@@ -86,8 +48,8 @@ namespace Edamos.KibanaUI
                         .AddAuthenticationSchemes(OpenIdConnectDefaults.AuthenticationScheme)
                         .RequireRole("logs", "admin"));
 
-                    options.DefaultPolicy = options.GetPolicy(DefaultPolicy);
-                });
+                options.DefaultPolicy = options.GetPolicy(DefaultPolicy);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -95,7 +57,7 @@ namespace Edamos.KibanaUI
         {
             app.UseEdamosDefaults(env);
 
-            app.UseWhen(NotContent, b => b.UseAuthentication().Use(Authorize));            
+            app.UseWhen(NotContent, b => b.UseAuthentication().UseAuthorization(DefaultPolicy));            
 
             app.RunProxy(new ProxyOptions
             {
@@ -111,39 +73,6 @@ namespace Edamos.KibanaUI
                    !context.Request.Path.Value.EndsWith(".svg") &&
                    !context.Request.Path.Value.EndsWith(".png") &&
                    !context.Request.Path.Value.EndsWith(".js");
-        }
-
-        private static async Task Authorize(HttpContext context, Func<Task> next)
-        {
-            // Use this if there are multiple authentication schemes
-            AuthenticateResult authResult = await context.AuthenticateAsync();
-
-            if (authResult.Succeeded && authResult.Principal.Identity.IsAuthenticated)
-            {
-                IAuthorizationService authorizationService =
-                    context.RequestServices.GetRequiredService<IAuthorizationService>();
-
-                AuthorizationResult result =
-                    await authorizationService.AuthorizeAsync(authResult.Principal, DefaultPolicy);
-
-                if (result.Succeeded)
-                {
-                    await next();
-                }
-                else
-                {
-                    await context.ForbidAsync();
-                }
-            }
-            else if (authResult.Failure != null)
-            {
-                // Rethrow, let the exception page handle it.
-                ExceptionDispatchInfo.Capture(authResult.Failure).Throw();
-            }
-            else
-            {
-                await context.ChallengeAsync();
-            }
-        }
+        }        
     }
 }

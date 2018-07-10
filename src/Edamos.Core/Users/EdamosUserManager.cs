@@ -6,20 +6,22 @@ using Microsoft.Extensions.Caching.Distributed;
 
 namespace Edamos.Core.Users
 {
-    public class EdamosUserManager : IUserManager<ApplicationUser>
+    public class EdamosUserManager : DistributedCacheWrapper<EdamosUserManager,ApplicationUser>, IUserManager<ApplicationUser>
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IDistributedCache _distributedCache;
 
-        public EdamosUserManager(UserManager<ApplicationUser> userManager, IDistributedCache<ApplicationUser> distributedCache)
+        public EdamosUserManager(UserManager<ApplicationUser> userManager,
+            IDistributedCache<ApplicationUser> distributedCache) : base(distributedCache)
         {
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
-            _distributedCache = distributedCache ?? throw new ArgumentNullException(nameof(distributedCache));
         }
 
-        public Task<ApplicationUser> FindByIdAsync(string userId)
+        public async Task<ApplicationUser> FindByIdAsync(string userId, CacheUsage cacheUsage)
         {
-            return this._userManager.FindByIdAsync(userId);
-        }
+            ApplicationUser result = await
+                this.GetOrSetDistributedCache(cacheUsage, userId, null, async () => await this._userManager.FindByIdAsync(userId));
+
+            return result;
+        }        
     }
 }
