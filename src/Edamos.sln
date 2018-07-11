@@ -14,6 +14,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E3EDB12C-AF68-48E5-AC03-2BDE8581D4F7}"
 	ProjectSection(SolutionItems) = preProject
 		backlog.txt = backlog.txt
+		..\env\fixDocker.ps1 = ..\env\fixDocker.ps1
 		..\env\selfSignedCert.ps1 = ..\env\selfSignedCert.ps1
 	EndProjectSection
 EndProject
