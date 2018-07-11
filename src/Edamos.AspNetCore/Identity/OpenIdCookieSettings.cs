@@ -1,6 +1,4 @@
-﻿using Elasticsearch.Net;
-
-namespace Edamos.AspNetCore
+﻿namespace Edamos.AspNetCore.Identity
 {
     public class OpenIdCookieSettings
     {

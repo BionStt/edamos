@@ -32,6 +32,7 @@ namespace Edamos.Core.Users
                 }));
 
             services.TryAddScoped<IUserManager<ApplicationUser>, EdamosUserManager>();
+            services.TryAddScoped<IRoleManager<IdentityRole>, EdamosRoleManager>();
 
             return services;
         }

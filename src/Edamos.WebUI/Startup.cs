@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Edamos.AspNetCore;
+using Edamos.AspNetCore.Identity;
 using Edamos.Core;
 using Edamos.Core.Users;
 using Microsoft.AspNetCore.Authentication;

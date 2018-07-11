@@ -22,5 +22,12 @@
             public const int Port = 5601;
             public const string Scheme = "http";
         }
+
+        public static class CommonEndpoints
+        {
+            public const string MetricsPath = "/metrics";
+            public const string MetricsEnvPath = "/env";
+            public const string MetricsTextPath = "/metrics-text";
+        }
     }
 }

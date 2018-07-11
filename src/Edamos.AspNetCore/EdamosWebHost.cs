@@ -5,6 +5,9 @@ using System.IO;
 using System.Net;
 using App.Metrics;
 using App.Metrics.AspNetCore;
+using App.Metrics.Formatters.Ascii;
+using App.Metrics.Formatters.Elasticsearch;
+using App.Metrics.Formatters.Json;
 using App.Metrics.Reporting.Elasticsearch;
 
 using Edamos.Core;
@@ -13,6 +16,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -46,16 +50,10 @@ namespace Edamos.AspNetCore
 
             builder.UseConfiguration(config);
 
-            builder.ConfigureMetricsWithDefaults(b =>
-            {
-                b.Report.ToElasticsearch(DebugConstants.ElasticSearch.MetricsUri, "metricsqwe",
-                    TimeSpan.FromSeconds(10));
-            });
-            builder.UseMetrics();
-
             builder.ConfigureServices(services =>
             {                
                 services.AddEdamosDefault(config);
+                services.AddEdamosMetrics(config);
 
                 // OPTIONAL: change redis connection if needed
                 ConfigurationOptions redisOptions = new ConfigurationOptions ();
@@ -66,28 +64,56 @@ namespace Edamos.AspNetCore
                     ConnectionMultiplexer.Connect(redisOptions, Console.Out);
 
                 //TODO: add cert encryption
-                services.AddDataProtection().PersistKeysToRedis(redis).SetApplicationName(AppDomain.CurrentDomain.FriendlyName);
-                services.AddMvc();
+                services.AddDataProtection().PersistKeysToRedis(redis).SetApplicationName(AppDomain.CurrentDomain.FriendlyName);                
                 
                 // TODO: remove if not using SSL termanation
                 services.Configure<ForwardedHeadersOptions>(options =>
                 {
                     options.ForwardedHeaders = ForwardedHeaders.XForwardedProto;
                 });
+
+                services.AddAuthorization(options => options.AddEdamosDefault());
+
+                services.AddMvc();
+                services.AddMetrics();
+
             });
           
             return builder;
         }
 
-        public static IApplicationBuilder UseEdamosDefaults(this IApplicationBuilder app, IHostingEnvironment env)
+        public static IServiceCollection AddEdamosMetrics(this IServiceCollection services, IConfigurationRoot config)
         {
-            app.UseMetricsAllMiddleware();
-            
-            app.UseForwardedHeaders();
+            var metrics = AppMetrics.CreateDefaultBuilder();
+            metrics.Report.ToElasticsearch(DebugConstants.ElasticSearch.MetricsUri, "metricsqwe2",
+                TimeSpan.FromSeconds(10));
+            //metrics.Report.ToConsole(TimeSpan.FromSeconds(10));
+            metrics.Configuration.Configure(
+                options =>
+                {
+                    options.DefaultContextLabel = "EDAMOS";
+                    options.Enabled = true;
+                    options.ReportingEnabled = true;
+                });
 
+            services.AddMetrics(metrics);
+            
+            var hostOptions = new MetricsWebHostOptions();
+            
+            services.AddMetricsReportScheduler(hostOptions.UnobservedTaskExceptionHandler);
+            //services.AddMetricsEndpoints(hostOptions.EndpointOptions);
+            services.AddMetricsTrackingMiddleware(hostOptions.TrackingMiddlewareOptions);
+            
+            return services;
+        }
+
+        public static IApplicationBuilder UseEdamosDefaults(this IApplicationBuilder app, IHostingEnvironment env)
+        {            
+            app.UseForwardedHeaders();            
 #if DEBUG
             app.UseDeveloperExceptionPage();
-#endif  
+#endif                    
+            app.UseMetricsRequestTrackingMiddleware();
             return app;
         }
 

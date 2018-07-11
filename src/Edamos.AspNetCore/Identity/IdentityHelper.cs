@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Edamos.AspNetCore
+namespace Edamos.AspNetCore.Identity
 {
     public static class IdentityHelper
     {
@@ -27,11 +27,15 @@ namespace Edamos.AspNetCore
             string userId = principal.Claims.Single(c => c.Type == ClaimTypes.NameIdentifier).Value;
 
             var claims = new List<Claim>();
-
-            claims.Add(new Claim(ClaimTypes.Role, "logs"));
+            
             ApplicationUser user = await userManager.FindByIdAsync(userId, CacheUsage.All);
-
             claims.Add(new Claim(ClaimTypes.Name, user.UserName));
+
+            IList<string> roles = await userManager.GetRolesAsync(user, CacheUsage.All);
+            foreach (string role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme,
                 ClaimTypes.Name, ClaimTypes.Role);

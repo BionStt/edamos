@@ -11,7 +11,7 @@ namespace Edamos.Core
         {
             services.AddLogging(logsBuilder => logsBuilder.AddEdamosLogs(config));
             services.AddEdamosUsers();
-
+            
             return services;
         }
     }

@@ -5,6 +5,7 @@ using System.Runtime.ExceptionServices;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Edamos.AspNetCore;
+using Edamos.AspNetCore.Identity;
 using Edamos.Core;
 using Edamos.Core.Users;
 using Microsoft.AspNetCore.Authentication;
@@ -23,7 +24,6 @@ namespace Edamos.KibanaUI
 {
     public class Startup
     {
-        const string DefaultPolicy = "default";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -42,13 +42,9 @@ namespace Edamos.KibanaUI
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy(DefaultPolicy,
-                    builder => builder.RequireAuthenticatedUser()
-                        .AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme)
-                        .AddAuthenticationSchemes(OpenIdConnectDefaults.AuthenticationScheme)
-                        .RequireRole("logs", "admin"));
+                options.AddEdamosDefault();
 
-                options.DefaultPolicy = options.GetPolicy(DefaultPolicy);
+                options.DefaultPolicy = options.GetPolicy(Policy.LogsName);
             });
         }
 
@@ -57,7 +53,7 @@ namespace Edamos.KibanaUI
         {
             app.UseEdamosDefaults(env);
 
-            app.UseWhen(NotContent, b => b.UseAuthentication().UseAuthorization(DefaultPolicy));            
+            app.UseWhen(NotContent, b => b.UseAuthentication().UseAuthorization(Policy.LogsName));            
 
             app.RunProxy(new ProxyOptions
             {
