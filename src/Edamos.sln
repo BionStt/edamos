@@ -24,6 +24,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edamos.AdminUI", "Edamos.Ad
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edamos.KibanaUI", "Edamos.KibanaUI\Edamos.KibanaUI.csproj", "{7EE778FA-52E2-4193-BCB5-11E68E972547}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edamos.UsersApi", "Edamos.UsersApi\Edamos.UsersApi.csproj", "{CBC80872-1197-4B97-BDA2-369759F1618C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +60,10 @@ Global
 		{7EE778FA-52E2-4193-BCB5-11E68E972547}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7EE778FA-52E2-4193-BCB5-11E68E972547}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7EE778FA-52E2-4193-BCB5-11E68E972547}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBC80872-1197-4B97-BDA2-369759F1618C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBC80872-1197-4B97-BDA2-369759F1618C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBC80872-1197-4B97-BDA2-369759F1618C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBC80872-1197-4B97-BDA2-369759F1618C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

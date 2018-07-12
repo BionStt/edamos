@@ -71,6 +71,13 @@ namespace Edamos.AspNetCore.Identity
                     options.ResponseType = Consts.OpenId.ResponseTypeCodeToken;
                     options.CallbackPath = new PathString(Consts.OpenId.CallbackPath);
                     options.SignedOutCallbackPath = new PathString(Consts.OpenId.SignOutCallbackPath);
+                    if (settings.Scopes != null)
+                    {
+                        foreach (string scope in settings.Scopes)
+                        {
+                            options.Scope.Add(scope);
+                        }
+                    }
 
                     options.SaveTokens = settings.SaveTokens;
                 });

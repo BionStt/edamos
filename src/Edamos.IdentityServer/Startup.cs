@@ -67,6 +67,18 @@ namespace Edamos.IdentityServer
 
             isb.AddInMemoryCaching().AddConfigurationStoreCache();
 
+            services.AddCors(options =>
+            {
+                // this defines a CORS policy called "default"
+                options.AddPolicy("default", policy =>
+                {
+                    // TODO: set correct CORS policy
+                    policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+                });
+
+                options.DefaultPolicyName = "default";
+            });
+
             MigrateDatabase(services);
         }
 
@@ -74,6 +86,7 @@ namespace Edamos.IdentityServer
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseEdamosDefaults(env);
+            app.UseCors();
             app.UseIdentityServer();
 
             app.UseStaticFiles();

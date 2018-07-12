@@ -3,3 +3,4 @@ measurement for operation time
 memory cache
 logout from all apps
 grafana
+influx db

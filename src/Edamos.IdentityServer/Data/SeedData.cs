@@ -10,7 +10,6 @@ using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
 using IdentityServer4.Models;
 using Microsoft.AspNetCore.Identity;
-using Client = IdentityServer4.EntityFramework.Entities.Client;
 
 namespace Edamos.IdentityServer.Data
 {
@@ -29,6 +28,15 @@ namespace Edamos.IdentityServer.Data
                 context.SaveChanges();
             }
 
+            if (!context.ApiResources.Any(r => r.Name == Consts.Api.ResourceId))
+            {
+                ApiResource resource = new ApiResource(Consts.Api.ResourceId, "Main API");
+
+                context.ApiResources.Add(resource.ToEntity());
+
+                context.SaveChanges();
+            }
+
             // TODO: configure clients            
             if (!context.Clients.Any(client => client.ClientId == DebugConstants.Ui.ClientId))
             {
@@ -38,7 +46,11 @@ namespace Edamos.IdentityServer.Data
                 client.AllowedGrantTypes = GrantTypes.HybridAndClientCredentials;
                 client.ClientSecrets = new[] { new Secret(DebugConstants.Ui.ClientSecret.Sha256()) }; // TODO: configure secret
                 client.AllowedScopes = new[]
-                    {IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile};
+                {
+                    IdentityServerConstants.StandardScopes.OpenId,
+                    IdentityServerConstants.StandardScopes.Profile,
+                    Consts.Api.ResourceId
+                };
 
                 client.RedirectUris = new[] { DebugConstants.Ui.RootAddress + Consts.OpenId.CallbackPath };
                 client.PostLogoutRedirectUris = new[] { DebugConstants.Ui.RootAddress + Consts.OpenId.SignOutCallbackPath };
@@ -56,7 +68,11 @@ namespace Edamos.IdentityServer.Data
                 client.AllowedGrantTypes = GrantTypes.HybridAndClientCredentials;
                 client.ClientSecrets = new[] { new Secret(DebugConstants.AdminUi.ClientSecret.Sha256()) }; // TODO: configure secret
                 client.AllowedScopes = new[]
-                    {IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile};
+                {
+                    IdentityServerConstants.StandardScopes.OpenId,
+                    IdentityServerConstants.StandardScopes.Profile,
+                    Consts.Api.ResourceId
+                };
 
                 client.RedirectUris = new[] { DebugConstants.AdminUi.RootAddress + Consts.OpenId.CallbackPath };
                 client.PostLogoutRedirectUris = new[] { DebugConstants.AdminUi.RootAddress + Consts.OpenId.SignOutCallbackPath };
@@ -74,7 +90,10 @@ namespace Edamos.IdentityServer.Data
                 client.AllowedGrantTypes = GrantTypes.HybridAndClientCredentials;
                 client.ClientSecrets = new[] { new Secret(DebugConstants.KibanaUi.ClientSecret.Sha256()) }; // TODO: configure secret
                 client.AllowedScopes = new[]
-                    {IdentityServerConstants.StandardScopes.OpenId, IdentityServerConstants.StandardScopes.Profile};
+                {
+                    IdentityServerConstants.StandardScopes.OpenId,
+                    IdentityServerConstants.StandardScopes.Profile
+                };
 
                 client.RedirectUris = new[] { DebugConstants.KibanaUi.RootAddress + Consts.OpenId.CallbackPath };
                 client.PostLogoutRedirectUris = new[] { DebugConstants.KibanaUi.RootAddress + Consts.OpenId.SignOutCallbackPath };

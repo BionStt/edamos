@@ -15,19 +15,17 @@
             public const string SignOutCallbackPath = "/signout-callback-oidc";
         }
 
+        public static class Api
+        {
+            public const string ResourceId = "edamosapi";
+        }
+
         public static class Kibana
         {
             public const string AppPath = "/app/kibana";
             public const string Host = "kibana";
             public const int Port = 5601;
             public const string Scheme = "http";
-        }
-
-        public static class CommonEndpoints
-        {
-            public const string MetricsPath = "/metrics";
-            public const string MetricsEnvPath = "/env";
-            public const string MetricsTextPath = "/metrics-text";
         }
     }
 }

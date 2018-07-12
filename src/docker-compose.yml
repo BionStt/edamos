@@ -63,6 +63,7 @@ services:
       - edamos.webui
       - edamos.adminui
       - edamos.kibanaui
+      - edamos.usersapi
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
@@ -122,3 +123,17 @@ services:
       "VIRTUAL_HOST": "https://kibana*/*"
       "VIRTUAL_HOST_WEIGHT": "4"
       "SERVICE_PORTS": "80"
+
+  edamos.usersapi:
+    image: edamosusersapi
+    build:
+      context: Edamos.UsersApi
+      dockerfile: Dockerfile
+    depends_on:
+      - edamos.identityserver
+      - redisdp
+    environment:
+      "VIRTUAL_HOST": "https://api*/users*"
+      "VIRTUAL_HOST_WEIGHT": "4"
+      "SERVICE_PORTS": "80"
+

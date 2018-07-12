@@ -13,6 +13,8 @@ using App.Metrics.Reporting.Elasticsearch;
 using Edamos.Core;
 using Edamos.Core.Logs;
 using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
@@ -20,6 +22,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using StackExchange.Redis;
 
 namespace Edamos.AspNetCore
@@ -74,9 +77,14 @@ namespace Edamos.AspNetCore
 
                 services.AddAuthorization(options => options.AddEdamosDefault());
 
-                services.AddMvc();
+                services.AddMvc().AddJsonOptions(json =>
+                {
+                    json.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                    json.SerializerSettings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
+                    json.SerializerSettings.MissingMemberHandling = MissingMemberHandling.Error;
+                });
+                
                 services.AddMetrics();
-
             });
           
             return builder;
@@ -126,6 +134,51 @@ namespace Edamos.AspNetCore
             app.UseMvcWithDefaultRoute();
 
             return app;
+        }
+
+        public static IApplicationBuilder UseEdamosApi(this IApplicationBuilder app, IHostingEnvironment env)
+        {
+            app.UseEdamosDefaults(env);
+
+            // TODO: disable if hosting environment also do it
+            app.UseResponseBuffering();
+            app.UseCors();
+            app.UseAuthentication();
+
+            app.UseMvc();
+
+            return app;
+        }
+
+        public static IServiceCollection AddEdamosApiServices(this IServiceCollection services)
+        {
+            services.AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme,
+                    options =>
+                    {
+                        options.Authority = DebugConstants.IdentityServer.Authority;
+                        options.Audience = Consts.Api.ResourceId;
+                        options.SaveToken = false;
+                    });
+                
+
+            services.AddCors(options =>
+            {
+                // this defines a CORS policy called "default"
+                options.AddPolicy("default", policy =>
+                {
+                    // TODO: set correct CORS policy
+                    policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+                });
+
+                options.DefaultPolicyName = "default";
+            });            
+
+            return services;
         }
     }
 }
