@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.AspNetCore;
 using App.Metrics.Formatters.Ascii;
 using App.Metrics.Formatters.Elasticsearch;
 using App.Metrics.Formatters.Json;
 using App.Metrics.Reporting.Elasticsearch;
-
+using Edamos.AspNetCore.Identity;
 using Edamos.Core;
 using Edamos.Core.Logs;
 using Microsoft.AspNetCore;
@@ -163,6 +165,16 @@ namespace Edamos.AspNetCore
                         options.Authority = DebugConstants.IdentityServer.Authority;
                         options.Audience = Consts.Api.ResourceId;
                         options.SaveToken = false;
+                        options.Events = new JwtBearerEvents
+                        {
+                            OnTokenValidated = async vc =>
+                            {
+                                ClaimsPrincipal principal =
+                                    await IdentityHelper.CreateEdamosPrincipal(vc.HttpContext, vc.Principal);
+                                vc.HttpContext.User = principal;
+                                vc.Principal.AddIdentity(principal.Identity as ClaimsIdentity);
+                            }
+                        };
                     });
                 
 

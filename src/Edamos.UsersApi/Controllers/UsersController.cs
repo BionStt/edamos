@@ -20,9 +20,19 @@ namespace Edamos.UsersApi.Controllers
         // GET api/values/5
         [HttpGet("{id}")]
         [Authorize]
-        public string Get(int id)
+        public IActionResult Get(string id)
         {
-            return "value";
+            return this.Ok(new
+            {
+                Identity = new
+                {
+                    this.User.Identity.Name,
+                    this.User.Identity.AuthenticationType,
+                    this.User.Identity.IsAuthenticated
+                },
+                Claims = this.User.Claims.Select(c => $"{c.Issuer}-{c.Type}|{c.ValueType.Split('#').Last()} : {c.Value}").ToArray(),
+                IsAdmin = this.User.IsInRole("admin")
+            });
         }
 
         // POST api/values
