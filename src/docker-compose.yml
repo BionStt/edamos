@@ -10,6 +10,19 @@ services:
     image: redis:4.0.5-alpine
     command: ["redis-server"]
 
+  rabbitmq:
+    image: rabbitmq:3.7.2-management
+    hostname: "rabbitmq"
+    environment:
+      RABBITMQ_DEFAULT_USER: "rabbitmq"
+      RABBITMQ_DEFAULT_PASS: "rabbitmq"
+      RABBITMQ_DEFAULT_VHOST: "/"
+    volumes:
+       - .\data\rabbitmq:/var/lib/rabbitmq
+    #ports:
+      #- "15672:15672"
+      #- "5672:5672"
+
   db:
     image: microsoft/mssql-server-linux:2017-CU7
     environment:

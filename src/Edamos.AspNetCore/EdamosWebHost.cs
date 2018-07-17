@@ -11,6 +11,7 @@ using App.Metrics.Formatters.Ascii;
 using App.Metrics.Formatters.Elasticsearch;
 using App.Metrics.Formatters.Json;
 using App.Metrics.Reporting.Elasticsearch;
+using Commmunity.AspNetCore.ExceptionHandling;
 using Edamos.AspNetCore.Identity;
 using Edamos.Core;
 using Edamos.Core.Logs;
@@ -87,6 +88,7 @@ namespace Edamos.AspNetCore
                 });
                 
                 services.AddMetrics();
+                services.AddExceptionHandlingPolicies(pb => pb.BuildEdamosDefault());
             });
           
             return builder;
@@ -144,6 +146,7 @@ namespace Edamos.AspNetCore
 
             // TODO: disable if hosting environment also do it
             app.UseResponseBuffering();
+            app.UseExceptionHandlingPolicies();
             app.UseCors();
             app.UseAuthentication();
 
