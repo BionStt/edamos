@@ -1,11 +1,12 @@
-﻿using Commmunity.AspNetCore.ExceptionHandling;
-using System;
-using System.Net;
-using Commmunity.AspNetCore.ExceptionHandling.Mvc;
-using Edamos.AspNetCore.ExceptionHandling;
+﻿using System;
+using System.Linq;
+using Community.AspNetCore.ExceptionHandling;
+using Community.AspNetCore.ExceptionHandling.Mvc;
+using Edamos.Core;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Internal;
 
-namespace Edamos.AspNetCore
+namespace Edamos.AspNetCore.ExceptionHandling
 {
     public static class ExceptionHandlingPolicyExtensions
     {
@@ -14,24 +15,17 @@ namespace Edamos.AspNetCore
             builder.For<EdamosApiException>()
                 .Log(lo =>
                 {
-                    lo.EventIdFactory = (c, e) =>
-                    {
-                        EventId eventId = LogEvents.UnhandledException;
-                        EdamosApiException ee = e as EdamosApiException;
-                        if (ee != null)
-                        {
-                            eventId = ee.EventId;
-                        }
+                    lo.EventIdFactory = (c, e) => e.EventId;
+                    lo.Level = (c, e) => e.LogLevel;
+                    lo.StateFactory = (c, e, o) => new FormattedLogValues(
+                        $"{e.Message}. Details: {e.DetailsFormat}", e.DetailsParams.ToArray());
 
-                        return eventId;
-                    };
-
-                    lo.Category = (c, e) => LogEvents.EdamosCategory;
+                    lo.Category = (c, e) =>  Consts.Logs.EdamosApiCategory;
                 })
                 .Response(e => (int)e.StatusCode)
                 .ClearCacheHeaders()
                 .WithObjectResult(
-                    (r, e) => new EdamosApiError()
+                    (r, e) => new EdamosApiError
                     {
                         StatusCode = r.HttpContext.Response.StatusCode,
                         Message = e.Message,
@@ -42,13 +36,13 @@ namespace Edamos.AspNetCore
             builder.For<Exception>()
                 .Log(lo =>
                 {
-                    lo.Category = (c, e) => LogEvents.EdamosCategory;
+                    lo.Category = (c, e) => Consts.Logs.EdamosApiCategory;
                     lo.Level = (c, e) => LogLevel.Error;
                     lo.EventIdFactory = (c, e) => LogEvents.UnhandledException;
                 })
                 .Response(null, ResponseAlreadyStartedBehaviour.GoToNextHandler)
                 .ClearCacheHeaders()
-                .WithObjectResult((r, e) => new EdamosApiError()
+                .WithObjectResult((r, e) => new EdamosApiError
                 {
                     StatusCode = r.HttpContext.Response.StatusCode,
                     Message = "Internal Server Error",

@@ -20,6 +20,11 @@
             public const string ResourceId = "edamosapi";
         }
 
+        public static class Logs
+        {
+            public const string EdamosApiCategory = "Edamos.Api";
+        }
+
         public static class Kibana
         {
             public const string AppPath = "/app/kibana";
