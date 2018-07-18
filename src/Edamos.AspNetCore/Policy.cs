@@ -16,6 +16,18 @@ namespace Edamos.AspNetCore
             .AddAuthenticationSchemes(OpenIdConnectDefaults.AuthenticationScheme)
             .RequireRole("logs", "admin").Build();
 
+        public static string GrafanaName = "Grafana";
+        public static AuthorizationPolicy Grafana { get; } = new AuthorizationPolicyBuilder().RequireAuthenticatedUser()
+            .AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddAuthenticationSchemes(OpenIdConnectDefaults.AuthenticationScheme)
+            .RequireRole("logs","grafana", "admin").Build();
+
+        public static string RabbitMqName = "RabbitMq";
+        public static AuthorizationPolicy RabbitMq { get; } = new AuthorizationPolicyBuilder().RequireAuthenticatedUser()
+            .AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddAuthenticationSchemes(OpenIdConnectDefaults.AuthenticationScheme)
+            .RequireRole("rabbitmq", "admin").Build();
+
         public static string AdminName = "Admin";
         public static AuthorizationPolicy Admin { get; } = new AuthorizationPolicyBuilder().RequireAuthenticatedUser()
             .AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -33,6 +45,8 @@ namespace Edamos.AspNetCore
             options.AddPolicy(AdminName, Admin);
             options.AddPolicy(LogsName, Logs);
             options.AddPolicy(MetricsName, Metrics);
+            options.AddPolicy(RabbitMqName, RabbitMq);
+            options.AddPolicy(GrafanaName, Grafana);
         }
 
         public static IApplicationBuilder AuthorizePath(this IApplicationBuilder app, string path, string policyName)

@@ -15,6 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		backlog.txt = backlog.txt
 		..\env\fixDocker.ps1 = ..\env\fixDocker.ps1
+		..\env\hosts.txt = ..\env\hosts.txt
 		..\env\selfSignedCert.ps1 = ..\env\selfSignedCert.ps1
 	EndProjectSection
 EndProject
@@ -22,9 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edamos.WebUI", "Edamos.WebU
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edamos.AdminUI", "Edamos.AdminUI\Edamos.AdminUI.csproj", "{C4FC2D98-9845-4363-9742-D14D5D14DB11}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edamos.KibanaUI", "Edamos.KibanaUI\Edamos.KibanaUI.csproj", "{7EE778FA-52E2-4193-BCB5-11E68E972547}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edamos.ProxyUI", "Edamos.ProxyUI\Edamos.ProxyUI.csproj", "{7EE778FA-52E2-4193-BCB5-11E68E972547}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edamos.UsersApi", "Edamos.UsersApi\Edamos.UsersApi.csproj", "{CBC80872-1197-4B97-BDA2-369759F1618C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Edamos.UsersApi", "Edamos.UsersApi\Edamos.UsersApi.csproj", "{CBC80872-1197-4B97-BDA2-369759F1618C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

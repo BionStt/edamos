@@ -1,2 +1,7 @@
 127.0.0.1 login.edamos.example.com
 127.0.0.1 edamos.example.com
+127.0.0.1 api.edamos.example.com
+127.0.0.1 admin.edamos.example.com
+127.0.0.1 kibana.edamos.example.com
+127.0.0.1 grafana.edamos.example.com
+127.0.0.1 rabbitmq.edamos.example.com

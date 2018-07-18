@@ -19,7 +19,7 @@ services:
     ports:
       - "80"
 
-  edamos.kibanaui:
+  edamos.proxyui:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:

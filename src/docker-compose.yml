@@ -58,8 +58,8 @@ services:
       "GF_INSTALL_PLUGINS": "grafana-clock-panel,grafana-simple-json-datasource"
     volumes:
       - .\data\grafana:/var/lib/grafana
-    ports:
-      - "3000:3000"
+    #ports:
+     # - "3000:3000"
 
   lb:
     image: dockercloud/haproxy:1.6.7
@@ -75,7 +75,7 @@ services:
       - edamos.identityserver
       - edamos.webui
       - edamos.adminui
-      - edamos.kibanaui
+      - edamos.proxyui
       - edamos.usersapi
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -124,16 +124,16 @@ services:
       "VIRTUAL_HOST_WEIGHT": "3"
       "SERVICE_PORTS": "80"
 
-  edamos.kibanaui:
+  edamos.proxyui:
     image: edamoskibanaui
     build:
-      context: Edamos.KibanaUI
+      context: Edamos.ProxyUI
       dockerfile: Dockerfile
     depends_on:
       - edamos.identityserver
       - redisdp
     environment:
-      "VIRTUAL_HOST": "https://kibana*/*"
+      "VIRTUAL_HOST": "https://kibana*/*, https://rabitmq*/*, https://grafana*/*"
       "VIRTUAL_HOST_WEIGHT": "4"
       "SERVICE_PORTS": "80"
 

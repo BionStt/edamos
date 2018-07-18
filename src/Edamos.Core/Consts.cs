@@ -32,5 +32,19 @@
             public const int Port = 5601;
             public const string Scheme = "http";
         }
+
+        public static class RabbitMq
+        {
+            public const string Host = "rabbitmq";
+            public const int Port = 15762;
+            public const string Scheme = "http";
+        }
+
+        public static class Grafana
+        {
+            public const string Host = "grafana";
+            public const int Port = 3000;
+            public const string Scheme = "http";
+        }        
     }
 }
