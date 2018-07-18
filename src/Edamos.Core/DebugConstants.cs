@@ -44,11 +44,13 @@
             public const string ClientId = "adm";
         }
 
-        public static class KibanaUi
+        public static class ProxyUi
         {
-            public const string RootAddress = "https://kibana.edamos.example.com";
-            public const string ClientSecret = "secretKibana";
-            public const string ClientId = "kbn";
+            public const string KibanaRootAddress = "https://kibana.edamos.example.com";
+            public const string GrafanaRootAddress = "https://grafana.edamos.example.com";
+            public const string RabbitMqRootAddress = "https://rabbitmq.edamos.example.com";
+            public const string ClientSecret = "secretProxyUI";
+            public const string ClientId = "proxyUI";
         }
 
         public static class IdentityServer

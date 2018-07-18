@@ -82,21 +82,31 @@ namespace Edamos.IdentityServer.Data
                 context.SaveChanges();
             }
 
-            if (!context.Clients.Any(client => client.ClientId == DebugConstants.KibanaUi.ClientId))
+            if (!context.Clients.Any(client => client.ClientId == DebugConstants.ProxyUi.ClientId))
             {
-                IdentityServer4.Models.Client client = new IdentityServer4.Models.Client();
-                client.ClientId = DebugConstants.KibanaUi.ClientId;
-                client.ClientName = "EDAMOS KIBANA";
+                Client client = new Client();
+                client.ClientId = DebugConstants.ProxyUi.ClientId;
+                client.ClientName = "EDAMOS PROXY UI";
                 client.AllowedGrantTypes = GrantTypes.HybridAndClientCredentials;
-                client.ClientSecrets = new[] { new Secret(DebugConstants.KibanaUi.ClientSecret.Sha256()) }; // TODO: configure secret
+                client.ClientSecrets = new[] { new Secret(DebugConstants.ProxyUi.ClientSecret.Sha256()) }; // TODO: configure secret
                 client.AllowedScopes = new[]
                 {
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile
                 };
 
-                client.RedirectUris = new[] { DebugConstants.KibanaUi.RootAddress + Consts.OpenId.CallbackPath };
-                client.PostLogoutRedirectUris = new[] { DebugConstants.KibanaUi.RootAddress + Consts.OpenId.SignOutCallbackPath };
+                client.RedirectUris = new[]
+                {
+                    DebugConstants.ProxyUi.KibanaRootAddress + Consts.OpenId.CallbackPath,
+                    DebugConstants.ProxyUi.GrafanaRootAddress + Consts.OpenId.CallbackPath,
+                    DebugConstants.ProxyUi.RabbitMqRootAddress + Consts.OpenId.CallbackPath,
+                };
+                client.PostLogoutRedirectUris = new[]
+                {
+                    DebugConstants.ProxyUi.KibanaRootAddress + Consts.OpenId.SignOutCallbackPath,
+                    DebugConstants.ProxyUi.GrafanaRootAddress + Consts.OpenId.SignOutCallbackPath,
+                    DebugConstants.ProxyUi.RabbitMqRootAddress + Consts.OpenId.SignOutCallbackPath,
+                };
                 client.RequireConsent = false;
                 context.Clients.Add(client.ToEntity());
 

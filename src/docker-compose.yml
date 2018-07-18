@@ -133,7 +133,7 @@ services:
       - edamos.identityserver
       - redisdp
     environment:
-      "VIRTUAL_HOST": "https://kibana*/*, https://rabitmq*/*, https://grafana*/*"
+      "VIRTUAL_HOST": "https://kibana*/*, https://rabbitmq*/*, https://grafana*/*"
       "VIRTUAL_HOST_WEIGHT": "4"
       "SERVICE_PORTS": "80"
 

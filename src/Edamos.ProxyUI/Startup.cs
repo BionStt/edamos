@@ -37,15 +37,15 @@ namespace Edamos.KibanaUI
         {
             services.AddEdamosCookieOpenId(new OpenIdCookieSettings
             {
-                ClientId = DebugConstants.KibanaUi.ClientId,
-                ClientSecret = DebugConstants.KibanaUi.ClientSecret
+                ClientId = DebugConstants.ProxyUi.ClientId,
+                ClientSecret = DebugConstants.ProxyUi.ClientSecret
             });
 
             services.AddAuthorization(options =>
             {
                 options.AddEdamosDefault();
 
-                options.DefaultPolicy = options.GetPolicy(Policy.LogsName);
+                //options.DefaultPolicy = options.GetPolicy(Policy.LogsName);
             });
         }
 
