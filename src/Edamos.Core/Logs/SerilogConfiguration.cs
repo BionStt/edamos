@@ -17,6 +17,8 @@ namespace Edamos.Core.Logs
             //TODO: use real ELK Uri
             ElasticsearchSinkOptions sinkOptions =
                 new ElasticsearchSinkOptions(new Uri(DebugConstants.ElasticSearch.LoggingUri));
+            sinkOptions.CustomFormatter = new ElasticsearchJsonFormatter(renderMessage: false);
+            sinkOptions.CustomDurableFormatter = new ElasticsearchJsonFormatter(renderMessage: false);
 
             configuration.Bind(nameof(ElasticsearchSinkOptions), sinkOptions);
 
@@ -24,6 +26,7 @@ namespace Edamos.Core.Logs
             conf.Enrich.FromLogContext();
             conf.Enrich.WithProperty("app", AppDomain.CurrentDomain.FriendlyName);
             conf.Enrich.WithProperty("machine", Environment.MachineName);
+            conf.Enrich.WithProperty("startup", DateTime.UtcNow.Ticks);
             conf.Enrich.With<EventNameEnricher>();
 
             conf.MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning);
@@ -35,7 +38,6 @@ namespace Edamos.Core.Logs
             conf.MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Information);
             conf.MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Information);
 #endif
-            conf.WriteTo.Elasticsearch(sinkOptions);
 
             //conf.WriteTo.Logger(lc =>
             //{

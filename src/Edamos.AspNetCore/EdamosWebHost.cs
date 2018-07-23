@@ -116,7 +116,8 @@ namespace Edamos.AspNetCore
             app.UseForwardedHeaders();            
                  
             app.UseMetricsRequestTrackingMiddleware();
-            app.UseTraceIdentifiers().PushToSerilogContext(options => options.AsSeparateProperties("RequestId"));
+            app.UseTraceIdentifiers()
+                .PushToSerilogContext(options => options.AsSeparateProperties("RequestId", "RequestIds"));
             return app;
         }
 

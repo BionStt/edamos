@@ -5,8 +5,5 @@ logout from all apps
 grafana
 influx db
 https://github.com/JamesRandall/AngularJS-OAuth2-Sample
-exception handling policy package
-
 
 trace identifiers
-proxyUI project
