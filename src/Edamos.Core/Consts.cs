@@ -45,6 +45,11 @@
             public const string Host = "grafana";
             public const int Port = 3000;
             public const string Scheme = "http";
-        }        
+        }
+        
+        public static class UsersCache
+        {
+            public const long SizeLimitMemoryBytes = 209715200; //200 MB
+        }
     }
 }

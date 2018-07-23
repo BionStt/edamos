@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.ExceptionServices;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Comminity.Extensions.Caching;
 using Edamos.Core;
 using Edamos.Core.Cache;
 using Edamos.Core.Users;
@@ -28,10 +29,10 @@ namespace Edamos.AspNetCore.Identity
 
             var claims = new List<Claim>();
             
-            ApplicationUser user = await userManager.FindByIdAsync(userId, CacheUsage.All);
+            ApplicationUser user = await userManager.FindByIdAsync(userId, AllowedCaches.All);
             claims.Add(new Claim(ClaimTypes.Name, user.UserName));
 
-            IList<string> roles = await userManager.GetRolesAsync(user, CacheUsage.All);
+            IList<string> roles = await userManager.GetRolesAsync(user, AllowedCaches.All);
             foreach (string role in roles)
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));
