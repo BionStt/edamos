@@ -36,7 +36,7 @@
         public static class RabbitMq
         {
             public const string Host = "rabbitmq";
-            public const int Port = 15762;
+            public const int Port = 15672;
             public const string Scheme = "http";
         }
 

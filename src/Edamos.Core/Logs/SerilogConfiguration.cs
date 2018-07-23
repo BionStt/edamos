@@ -32,6 +32,8 @@ namespace Edamos.Core.Logs
 
 #if DEBUG
             conf.WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3} {RequestId,-30}] {Source}:{EId}:{EName} {NewLine}{Exception}");
+            conf.MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Information);
+            conf.MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Information);
 #endif
             conf.WriteTo.Elasticsearch(sinkOptions);
 

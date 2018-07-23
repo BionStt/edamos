@@ -1,4 +1,6 @@
 ﻿
+using System;
+using System.Linq;
 using Serilog.Core;
 using Serilog.Events;
 
@@ -35,7 +37,7 @@ namespace Edamos.Core.Logs
                     {
                         var ename = propertyFactory.CreateProperty(
                             EventNamePropertyName,
-                            Truncate(sv.Properties[1].Value?.ToString()));
+                            Truncate(logEvent, sv.Properties[1].Value?.ToString()));
 
                         logEvent.AddPropertyIfAbsent(ename);
                     }
@@ -43,7 +45,7 @@ namespace Edamos.Core.Logs
                     {
                         var ename = propertyFactory.CreateProperty(
                             EventNamePropertyName,
-                            Truncate(logEvent.MessageTemplate?.Text));
+                            Truncate(null, logEvent.MessageTemplate?.Text));
 
                         logEvent.AddPropertyIfAbsent(ename);
                     }
@@ -54,37 +56,62 @@ namespace Edamos.Core.Logs
                 var eid = propertyFactory.CreateProperty(EventIdPropertyName, -1);
                 logEvent.AddPropertyIfAbsent(eid);
                 var ename = propertyFactory.CreateProperty(EventNamePropertyName,
-                    Truncate(logEvent.MessageTemplate?.Text));
+                    Truncate(null, logEvent.MessageTemplate?.Text));
                 logEvent.AddPropertyIfAbsent(ename);
             }
         }
 
-        private static string Truncate(string value)
+        private static string Truncate(LogEvent logEvent, string value)
         {
             if (string.IsNullOrEmpty(value)) return value;
 
-            var startsWith = value.IndexOf('{');
-            if (startsWith == 0 && value.Length > 2)
+            ReadOnlySpan<char> span = value;
+            span = span.Trim('"');
+
+            if (logEvent != null)
             {
-                int endIndex = value.IndexOf(':');
+                if (logEvent.Properties.TryGetValue("SourceContext", out var context))
+                {
+                    ReadOnlySpan<char> oldValue = context.ToString();
+                    oldValue = oldValue.Trim('"');
+
+                    if (span.StartsWith(oldValue) && span.Length > oldValue.Length + 1)
+                    {
+                        span = span.Slice(oldValue.Length + 1);
+                    } 
+                }
+            }
+
+            if (span.StartsWith("{") && span.Length > 2)
+            {
+                int endIndex = span.IndexOf(':');
 
                 if (endIndex < 2)
                 {
-                    endIndex = value.IndexOf('}');
+                    endIndex = span.IndexOf('}');
                 }
 
                 if (endIndex > 1)
                 {
-                    value = value.Substring(startsWith, endIndex + 1);
+                    span = span.Slice(1, endIndex - 1);
                 }                
             }
-
-            if (value.Length > 100)
+            else if (span.Length > 10)
             {
-                value = value.Substring(0, 100);
+                int endIndex = span.IndexOf('{');
+
+                if (endIndex > 10)
+                {
+                    span = span.Slice(0, endIndex);
+                }
             }
 
-            return value;
+            if (span.Length > 100)
+            {
+                span = span.Slice(0, 100);
+            }
+
+            return span.Trim().ToString();
         }
     }
 }
