@@ -2,14 +2,64 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.Extensions.Configuration;
 using Serilog;
 using Serilog.Events;
 using Serilog.Filters;
+using Serilog.Sinks.Elasticsearch;
 
 namespace Edamos.Core.Logs
 {
     public static class SerilogConfiguration
     {
+        public static LoggerConfiguration ApplyEdamosConfiguration(this LoggerConfiguration conf, IConfiguration configuration)
+        {
+            //TODO: use real ELK Uri
+            ElasticsearchSinkOptions sinkOptions =
+                new ElasticsearchSinkOptions(new Uri(DebugConstants.ElasticSearch.LoggingUri));
+
+            configuration.Bind(nameof(ElasticsearchSinkOptions), sinkOptions);
+
+            conf.WriteTo.Elasticsearch(sinkOptions);
+            conf.Enrich.FromLogContext();
+            conf.Enrich.WithProperty("app", AppDomain.CurrentDomain.FriendlyName);
+            conf.Enrich.WithProperty("machine", Environment.MachineName);
+            conf.Enrich.With<EventNameEnricher>();
+
+            conf.MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning);
+            conf.MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning);
+            conf.MinimumLevel.Override("Microsoft.AspNetCore.DataProtection", LogEventLevel.Information);
+
+#if DEBUG
+            conf.WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3} {RequestId,-30}] {Source}:{EId}:{EName} {NewLine}{Exception}");
+#endif
+            conf.WriteTo.Elasticsearch(sinkOptions);
+
+            //conf.WriteTo.Logger(lc =>
+            //{
+            //    lc.NewFilterBuilder()
+            //        .AddSource("Microsoft.EntityFrameworkCore") // don't log "Microsoft.EntityFrameworkCore" source by default
+            //        .RemoveLevelsFromSource("Microsoft.EntityFrameworkCore", // keep important events from "Microsoft.EntityFrameworkCore"
+            //            LogEventLevel.Warning,
+            //            LogEventLevel.Error,
+            //            LogEventLevel.Fatal)
+
+            //        .AddSource("Microsoft.AspNetCore") // don't log "Microsoft.AspNetCore" source by default
+            //        .RemoveLevelsFromSource("Microsoft.AspNetCore", // keep important events from "Microsoft.AspNetCore"
+            //            LogEventLevel.Warning,
+            //            LogEventLevel.Error,
+            //            LogEventLevel.Fatal)
+            //        .RemoveLevelsFromSource("Microsoft.AspNetCore.DataProtection", // keep important events from "Microsoft.AspNetCore.DataProtection"
+            //            LogEventLevel.Information,
+            //            LogEventLevel.Warning,
+            //            LogEventLevel.Error,
+            //            LogEventLevel.Fatal)
+            //        .BuildExclude();
+            //});
+
+            return conf;
+        }
+
         public static LoggerConfiguration WriteToRollingFile(this LoggerConfiguration lc, string fileName)
         {
             if (fileName == null) throw new ArgumentNullException(nameof(fileName));

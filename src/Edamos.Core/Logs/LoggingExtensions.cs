@@ -12,64 +12,7 @@ namespace Edamos.Core.Logs
     {
         public static ILoggingBuilder AddEdamosLogs(this ILoggingBuilder loggingBuilder, IConfiguration configuration)
         {
-            LoggerConfiguration conf = new LoggerConfiguration();
-
-            //TODO: use real ELK Uri
-            ElasticsearchSinkOptions sinkOptions =
-                new ElasticsearchSinkOptions(new Uri(DebugConstants.ElasticSearch.LoggingUri));
-            
-
-            configuration.Bind(nameof(ElasticsearchSinkOptions), sinkOptions);
-
-            conf.WriteTo.Elasticsearch(sinkOptions);
-            conf.Enrich.FromLogContext();
-            conf.Enrich.WithProperty("app", AppDomain.CurrentDomain.FriendlyName);
-            conf.Enrich.WithProperty("machine", Environment.MachineName);
-
-            conf.WriteTo.Logger(lc =>
-            {
-                lc.NewFilterBuilder()
-                    .AddSource("Microsoft.EntityFrameworkCore")
-                    .RemoveLevelsFromSource("Microsoft.EntityFrameworkCore", LogEventLevel.Debug, LogEventLevel.Verbose)
-                    .BuildIncludeOnly();
-
-            }).WriteToRollingFile("efcore.log");
-
-            conf.WriteTo.Logger(lc =>
-            {
-                lc.NewFilterBuilder()
-                    .AddSource("Microsoft.AspNetCore")
-                    .RemoveLevelsFromSource("Microsoft.AspNetCore", LogEventLevel.Debug, LogEventLevel.Verbose)
-                    .BuildIncludeOnly();
-
-            }).WriteToRollingFile("aspnetcore.log");            
-
-            conf.WriteTo.Logger(lc =>
-            {
-                lc.NewFilterBuilder()
-                    .AddSource("Microsoft.EntityFrameworkCore") // don't log "Microsoft.EntityFrameworkCore" source by default
-                    .RemoveLevelsFromSource("Microsoft.EntityFrameworkCore", // keep important events from "Microsoft.EntityFrameworkCore"
-                        LogEventLevel.Warning, 
-                        LogEventLevel.Error,
-                        LogEventLevel.Fatal)
-
-                    .AddSource("Microsoft.AspNetCore") // don't log "Microsoft.AspNetCore" source by default
-                    .RemoveLevelsFromSource("Microsoft.AspNetCore", // keep important events from "Microsoft.AspNetCore"
-                        LogEventLevel.Warning,
-                        LogEventLevel.Error,
-                        LogEventLevel.Fatal)
-                    .RemoveLevelsFromSource("Microsoft.AspNetCore.DataProtection", // keep important events from "Microsoft.AspNetCore.DataProtection"
-                        LogEventLevel.Information,
-                        LogEventLevel.Warning,
-                        LogEventLevel.Error,
-                        LogEventLevel.Fatal)
-                    .BuildExclude();
-
-#if DEBUG
-                lc.WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3} {TraceIdentifier,-30}] {Source}:{EId}:{EName} {NewLine}{Exception}");
-#endif
-                lc.WriteTo.Elasticsearch(sinkOptions);
-            });
+            LoggerConfiguration conf = new LoggerConfiguration().ApplyEdamosConfiguration(configuration);
                 
             Log.Logger = conf.CreateLogger();
 

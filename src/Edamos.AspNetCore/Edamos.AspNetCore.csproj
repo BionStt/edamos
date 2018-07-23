@@ -14,6 +14,7 @@
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.Redis" Version="0.4.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.1.1" />
+    <PackageReference Include="TraceIdentifiers.AspNetCore.Serilog" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>

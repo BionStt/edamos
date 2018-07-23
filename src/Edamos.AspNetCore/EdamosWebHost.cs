@@ -1,33 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Net;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using App.Metrics;
 using App.Metrics.AspNetCore;
-using App.Metrics.Formatters.Ascii;
-using App.Metrics.Formatters.Elasticsearch;
-using App.Metrics.Formatters.Json;
-using App.Metrics.Reporting.Elasticsearch;
 using Community.AspNetCore.ExceptionHandling;
 using Edamos.AspNetCore.ExceptionHandling;
 using Edamos.AspNetCore.Identity;
 using Edamos.Core;
-using Edamos.Core.Logs;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using StackExchange.Redis;
+using TraceIdentifiers.AspNetCore;
+using TraceIdentifiers.AspNetCore.Serilog;
 
 namespace Edamos.AspNetCore
 {
@@ -123,10 +114,9 @@ namespace Edamos.AspNetCore
         public static IApplicationBuilder UseEdamosDefaults(this IApplicationBuilder app, IHostingEnvironment env)
         {            
             app.UseForwardedHeaders();            
-#if DEBUG
-            app.UseDeveloperExceptionPage();
-#endif                    
+                 
             app.UseMetricsRequestTrackingMiddleware();
+            app.UseTraceIdentifiers().PushToSerilogContext(options => options.AsSeparateProperties("RequestId"));
             return app;
         }
 
@@ -144,11 +134,12 @@ namespace Edamos.AspNetCore
         public static IApplicationBuilder UseEdamosApi(this IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseEdamosDefaults(env);
-
+            
             // TODO: disable if hosting environment also do it
             app.UseResponseBuffering();
-            app.UseExceptionHandlingPolicies();
             app.UseCors();
+            app.UseExceptionHandlingPolicies();
+            
             app.UseAuthentication();
 
             app.UseMvc();
