@@ -34,8 +34,9 @@ namespace Edamos.Core.Users
                 },
                 options =>
                 {
-                    //options.Serializer = o => Serialization.SerializeJson(0);
-                    //options.Deserializer = (d, t) => Serialization.DeserializeJson(d, t);
+                    options.HandleGetErrors = true;
+                    options.Serializer = o => Serialization.SerializeJson(0);
+                    options.Deserializer = (d, t) => Serialization.DeserializeJson(d, t);
                 }).AddMetricsToDistributedCache<ApplicationUser>();
 
             services.AddCombinedCache<ApplicationUser>();           

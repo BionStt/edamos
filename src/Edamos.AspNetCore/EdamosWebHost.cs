@@ -33,7 +33,7 @@ namespace Edamos.AspNetCore
             const string crtInstallPath = "/usr/local/share/ca-certificates/EdamosRootCA.crt";
             if (!File.Exists(crtInstallPath))
             {
-                File.Copy("/app/bin/debug/netcoreapp2.0/root.crt", crtInstallPath);
+                File.Copy("/app/bin/debug/netcoreapp2.1/root.crt", crtInstallPath);
 
                 Process.Start("update-ca-certificates")?.WaitForExit(10000);
             }            
