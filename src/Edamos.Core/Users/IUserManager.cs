@@ -1,4 +1,4 @@
-﻿using Comminity.Extensions.Caching;
+﻿
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,8 +6,8 @@ namespace Edamos.Core.Users
 {
     public interface IUserManager<TUser>
     {
-        Task<TUser> FindByIdAsync(string userId, AllowedCaches cacheUsage);
+        Task<TUser> FindByIdAsync(string userId, bool allowCache);
 
-        Task<IList<string>> GetRolesAsync(TUser user, AllowedCaches cacheUsage);
+        Task<IList<string>> GetRolesAsync(TUser user, bool allowCache);
     }
 }

@@ -47,11 +47,11 @@ namespace Edamos.AspNetCore
                 .Build();
 
             builder.UseConfiguration(config);
-
+            
             builder.ConfigureServices(services =>
-            {                
-                services.AddEdamosDefault(config);
+            {                                
                 services.AddEdamosMetrics(config);
+                services.AddEdamosDefault(config);
 
                 // OPTIONAL: change redis connection if needed
                 ConfigurationOptions redisOptions = new ConfigurationOptions ();
