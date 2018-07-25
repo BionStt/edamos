@@ -28,10 +28,15 @@ namespace Edamos.Core.Users
 
             services.AddMemoryCache<ApplicationUser>().AddMetricsToMemoryCache<ApplicationUser>();
             services.AddRedisDistributedCache<ApplicationUser>(options =>
-            {
-                options.Configuration = DebugConstants.Redis.UsersCacheHost;
-                options.InstanceName = string.Empty;
-            }).AddMetricsToDistributedCache<ApplicationUser>();
+                {
+                    options.Configuration = DebugConstants.Redis.UsersCacheHost;
+                    options.InstanceName = string.Empty;
+                },
+                options =>
+                {
+                    //options.Serializer = o => Serialization.SerializeJson(0);
+                    //options.Deserializer = (d, t) => Serialization.DeserializeJson(d, t);
+                }).AddMetricsToDistributedCache<ApplicationUser>();
 
             services.AddCombinedCache<ApplicationUser>();           
 

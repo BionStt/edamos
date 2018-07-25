@@ -1,5 +1,13 @@
 version: '3.4'
 services:
+  influxdb:
+    image: influxdb:1.6.0
+    command: "influxd"
+    volumes:
+       - .\data\influxdb:/var/lib/influxdb
+    environment:
+      INFLUXDB_DB: "db0"   
+
   redisdp:
     image: redis:4.0.5-alpine
     command: ["redis-server", "--appendonly", "yes"]

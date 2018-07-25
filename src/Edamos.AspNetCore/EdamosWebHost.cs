@@ -47,6 +47,17 @@ namespace Edamos.AspNetCore
                 .Build();
 
             builder.UseConfiguration(config);
+            //builder.ConfigureMetricsWithDefaults((context, metricsBuilder) =>
+            //{
+            //    metricsBuilder.Report.ToElasticsearch(DebugConstants.ElasticSearch.MetricsUri, "metricsqwe3",
+            //        TimeSpan.FromSeconds(10));
+            //    metricsBuilder.Configuration.Configure(
+            //        options =>
+            //        {
+            //            options.Enabled = true;
+            //            options.ReportingEnabled = true;
+            //        });
+            //});
             
             builder.ConfigureServices(services =>
             {                                
@@ -89,13 +100,13 @@ namespace Edamos.AspNetCore
         public static IServiceCollection AddEdamosMetrics(this IServiceCollection services, IConfigurationRoot config)
         {
             var metrics = AppMetrics.CreateDefaultBuilder();
-            metrics.Report.ToElasticsearch(DebugConstants.ElasticSearch.MetricsUri, "metricsqwe2",
-                TimeSpan.FromSeconds(10));
+            //metrics.Report.ToElasticsearch(DebugConstants.ElasticSearch.MetricsUri, "metricsqwe2",
+            //    TimeSpan.FromSeconds(10));
             //metrics.Report.ToConsole(TimeSpan.FromSeconds(10));
+            metrics.Report.ToInfluxDb("http://influxdb:8086", "db0", TimeSpan.FromSeconds(5));
             metrics.Configuration.Configure(
                 options =>
                 {
-                    options.DefaultContextLabel = "EDAMOS";
                     options.Enabled = true;
                     options.ReportingEnabled = true;
                 });
