@@ -6,7 +6,9 @@ services:
     volumes:
        - .\data\influxdb:/var/lib/influxdb
     environment:
-      INFLUXDB_DB: "db0"   
+      INFLUXDB_DB: "db0"
+      INFLUXDB_DATA_QUERY_LOG_ENABLED: "false"
+      INFLUXDB_REPORTING_DISABLED: "true"
 
   redisdp:
     image: redis:4.0.5-alpine
@@ -66,6 +68,8 @@ services:
       "GF_INSTALL_PLUGINS": "grafana-clock-panel,grafana-simple-json-datasource"
     volumes:
       - .\data\grafana:/var/lib/grafana
+    depends_on:
+      - influxdb
     #ports:
      # - "3000:3000"
 

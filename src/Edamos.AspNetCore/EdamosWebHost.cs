@@ -101,7 +101,7 @@ namespace Edamos.AspNetCore
         {
             var metrics = AppMetrics.CreateDefaultBuilder();
 
-            metrics.Report.ToInfluxDb(Consts.InfluxDb.Uri.ToString(), Consts.InfluxDb.MetricsDbName, TimeSpan.FromSeconds(5));
+            //metrics.Report.ToInfluxDb(Consts.InfluxDb.Url, Consts.InfluxDb.MetricsDbName, TimeSpan.FromSeconds(5));
             metrics.Configuration.Configure(
                 options =>
                 {
