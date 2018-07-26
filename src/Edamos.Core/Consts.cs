@@ -41,8 +41,9 @@ namespace Edamos.Core
             public const int Port = 8086;
             public const string Scheme = "http";
             public const string MetricsDbName = "db0";
+            public const string RetentionPolicy = "p15m";
 
-            public static string Url { get; } = new UriBuilder(Scheme, Host, Port).Uri.ToString().TrimEnd('/');
+            public static Uri Uri { get; } = new UriBuilder(Scheme, Host, Port).Uri;
         }
 
         public static class RabbitMq

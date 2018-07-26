@@ -5,8 +5,8 @@
     <DockerTargetOS>Linux</DockerTargetOS>
     <ProjectGuid>878b52d0-5b13-4d75-add7-0635c79f021c</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
-    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
-    <DockerServiceName>edamos.identityserver</DockerServiceName>
+    <DockerServiceUrl>https://edamos.example.com</DockerServiceUrl>
+    <DockerServiceName>edamos.webui</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">

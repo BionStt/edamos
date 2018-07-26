@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Net.Http;
 using System.Security.Claims;
 using App.Metrics;
 using App.Metrics.AspNetCore;
@@ -46,18 +47,7 @@ namespace Edamos.AspNetCore
                 .AddCommandLine(args)
                 .Build();
 
-            builder.UseConfiguration(config);
-            //builder.ConfigureMetricsWithDefaults((context, metricsBuilder) =>
-            //{
-            //    metricsBuilder.Report.ToElasticsearch(DebugConstants.ElasticSearch.MetricsUri, "metricsqwe3",
-            //        TimeSpan.FromSeconds(10));
-            //    metricsBuilder.Configuration.Configure(
-            //        options =>
-            //        {
-            //            options.Enabled = true;
-            //            options.ReportingEnabled = true;
-            //        });
-            //});
+            builder.UseConfiguration(config);            
             
             builder.ConfigureServices(services =>
             {                                
@@ -101,7 +91,17 @@ namespace Edamos.AspNetCore
         {
             var metrics = AppMetrics.CreateDefaultBuilder();
 
-            //metrics.Report.ToInfluxDb(Consts.InfluxDb.Url, Consts.InfluxDb.MetricsDbName, TimeSpan.FromSeconds(5));
+            HttpClient httpClient = new HttpClient();
+            httpClient.BaseAddress = Consts.InfluxDb.Uri;
+            httpClient.GetAsync($"query?q=CREATE RETENTION POLICY {Consts.InfluxDb.RetentionPolicy} ON {Consts.InfluxDb.MetricsDbName} DURATION 15m REPLICATION 1 DEFAULT");
+
+            metrics.Report.ToInfluxDb(options =>
+            {
+                options.FlushInterval = TimeSpan.FromSeconds(5);
+                options.InfluxDb.BaseUri = Consts.InfluxDb.Uri;
+                options.InfluxDb.Database = Consts.InfluxDb.MetricsDbName;
+            });
+
             metrics.Configuration.Configure(
                 options =>
                 {
