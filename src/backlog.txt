@@ -1,9 +1,6 @@
 pages for UI to forbidden
-measurement for operation time
+
 memory cache
 logout from all apps
-grafana
-influx db
-https://github.com/JamesRandall/AngularJS-OAuth2-Sample
 
-trace identifiers
+https://github.com/JamesRandall/AngularJS-OAuth2-Sample

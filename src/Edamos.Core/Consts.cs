@@ -1,4 +1,6 @@
-﻿namespace Edamos.Core
+﻿using System;
+
+namespace Edamos.Core
 {
     public static class Consts
     {
@@ -31,6 +33,16 @@
             public const string Host = "kibana";
             public const int Port = 5601;
             public const string Scheme = "http";
+        }
+
+        public static class InfluxDb
+        {
+            public const string Host = "influxdb";
+            public const int Port = 8086;
+            public const string Scheme = "http";
+            public const string MetricsDbName = "db0";
+
+            public static Uri Uri { get; } = new UriBuilder(Scheme, Host, Port).Uri;
         }
 
         public static class RabbitMq
